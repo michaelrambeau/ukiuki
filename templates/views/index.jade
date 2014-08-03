@@ -1,0 +1,42 @@
+extends ../layouts/ukiuki
+
+block content
+	header
+		.container-fluid
+			.icons.hidden-xs
+				img(src="/images/logos/icon-facebook.png",alt="Facebook",width="30")
+				img(src="/images/logos/icon-twitter.png",alt="Twitter",width="30")
+				img(src="/images/logos/icon-search.png",alt="Search",width="30")
+			img.logo(src="/images/logos/u-art.png",alt="UKiUki Art",width="200")
+		div.uki-navbar
+			.container-fluid
+				button.btn.navbar-toggle(data-toggle="offcanvas",style="display:block;")
+					div.bars
+						- for(var i=0; i<3; i++)
+							span.icon-bar
+					div.text Filter by category
+	
+	.container-fluid
+		//div.row.row-offcanvas.row-offcanvas-left
+		div#sidebar.ui.sidebar
+			div.ui.menu.fluid.vertical.inverted
+				a.item(ng-click="setCategory('*')", ng-class="{active: search.category == '*'}")
+					| All
+					span.label {{galleries.length}}
+				a.item(ng-repeat="category in categories", ng-click="setCategory(category.value)", ng-class="{active: search.category == category.value}")
+					| {{category.label}}
+					span.label(ng-show="category.total > 0") {{category.total}}
+
+		//div.col-xs-12.col-sm-10
+
+		div.row
+			div.col-sm-6.col-md-4.col-lg-3(ng-repeat="gallery in galleries | filter:searchFilter")
+				img.img-responsive.gallery(ng-src="{{getThumbnailUrl(gallery)}}", alt="{{gallery.title}}")
+						
+						
+		
+block js
+	script(src="/js/lib/angular/angular.min.js")
+	script(src="/styles/semantic/less/modules/sidebar.js")
+	script(src="/js/ukiuki-top-page.js")
+	//script(src="/js/ukiuki.js")

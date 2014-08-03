@@ -1,0 +1,21 @@
+extends ../layouts/default
+
+block intro
+	.container
+		h1 Gallery
+	
+block content
+	.container
+		if galleries.length
+			each gallery in galleries
+				h2= gallery.title
+					if gallery.publishedDate
+						.pull-right.text-muted= gallery._.publishedDate.format('Do MMM YYYY')
+				
+				.row.gallery-images
+					if gallery.image.exists
+						.col-sm-4.col-md-4.gallery-image: img(src=gallery._.image.limit(680,680)).img-rounded
+
+				
+		else
+			h3.text-muted There are no image galleries yet.

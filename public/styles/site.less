@@ -1,0 +1,60 @@
+// Bootstrap
+// =========
+
+// You can include less bootstrap components if you like by
+// importing the .less files you want directly, instead of
+// the main bootstrap/bootstrap.less file.
+//
+// Bootstrap can be removed entirely by deleting this line.
+
+//@import "bootstrap/bootstrap.less";
+// Core variables and mixins
+@import "bootstrap/variables.less";
+@import "bootstrap/mixins.less";
+
+// Reset and dependencies
+@import "bootstrap/normalize.less";
+//@import "bootstrap/print.less";
+//@import "bootstrap/glyphicons.less";
+
+// Core CSS
+@import "bootstrap/scaffolding.less";
+@import "bootstrap/type.less";
+@import "bootstrap/code.less";
+@import "bootstrap/grid.less";
+@import "bootstrap/tables.less";
+@import "bootstrap/forms.less";
+@import "bootstrap/buttons.less";
+
+@import "bootstrap/navbar.less";
+
+// Utility classes
+@import "bootstrap/utilities.less";
+@import "bootstrap/responsive-utilities.less";
+
+// The easiest way to customise Bootstrap variables while
+// being able to easily override the source files with new
+// versions is to override the ones you want in another file.
+//
+// You can also add your own custom variables to this file for
+// use in your site stylesheets.
+
+@import "site/variables.less";
+
+
+// Site Styles
+// ===========
+
+// Add your own site style includes here
+@import "site/layout.less";
+@import "site/header.less";
+@import "site/gallery.less";
+@import "site/footer.less";
+@import "site/offcanvas.less";
+
+@import "semantic/less/collections/menu.less";
+@import "semantic/less/modules/sidebar.less";
+
+body{
+	#gradient >  .horizontal-three-colors(#919191; #cbcbcb; 50%; #919191);
+}

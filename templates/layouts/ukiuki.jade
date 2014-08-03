@@ -1,0 +1,44 @@
+doctype html
+html(ng-app="app",ng-controller="MainController")
+
+	//- HTML HEADER
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		title UKiUKi DEV
+		link(href="/styles/site.min.css", rel="stylesheet")
+		
+	body
+	
+		block content
+		
+		footer
+			div.container-fluid
+				div.row
+					div.col.col-md-4
+						h2 About us
+						div.ui.menu.vertical.fluid
+							a.item(href="#") What is UKiUKi?
+							a.item(href="#") Get Professional
+							a.item(href="#") FAQs
+							a.item(href="#") Mature Audience conditions
+							a.item(href="#") Terms of use
+							a.item(href="#") Report a bug
+							a.item(href="#") Contact us
+					div.col.col-md-4
+						h2 Latest news
+						div.ui.menu.vertical.fluid
+							a.item(href="#") Title of news #1
+							a.item(href="#") Title of news #2
+							a.item(href="#") Title of news #3
+	
+							
+					div.col.col-md-4
+						h2 Recommended artists
+						
+		script(src='/js/lib/jquery/jquery-1.11.1.min.js')
+		script(src='/js/lib/bootstrap/bootstrap-3.2.0.min.js')
+		
+		block js
+	

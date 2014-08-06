@@ -3,11 +3,19 @@ extends ../layouts/ukiuki
 block content
 	header
 		.container-fluid
-			.icons.hidden-xs.hidden-sm
-				img(src="/images/logos/icon-facebook.png",alt="Facebook",width="30")
-				img(src="/images/logos/icon-twitter.png",alt="Twitter",width="30")
-				img(src="/images/logos/icon-search.png",alt="Search",width="30")
-			img.logo(src="/images/logos/u-art.png",alt="UKiUki Art",width="200")
+			.table-layout
+				div
+					img.logo(src="/images/logos/u-art.png",alt="UKiUki Art",width="163",height="66")
+				div.hidden-xs.hidden-sm
+					span.motto The most unique, creative space for artists
+				div.right-column.hidden-xs.hidden-sm				
+					span.member Are you a member? 
+					a.link(href="#") Login | Register
+					span.icons
+						img(src="/images/logos/icon-facebook.png",alt="Facebook",width="25")
+						img(src="/images/logos/icon-twitter.png",alt="Twitter",width="25")
+						img(src="/images/logos/icon-search.png",alt="Search",width="25")
+			
 		div.uki-navbar
 			.container-fluid
 				button.btn.navbar-toggle(data-toggle="offcanvas",style="display:block;")
@@ -15,9 +23,9 @@ block content
 						- for(var i=0; i<3; i++)
 							span.icon-bar
 					div.text Filter by category
-	
-	.container-fluid
-		//div.row.row-offcanvas.row-offcanvas-left
+
+
+	- if (true)
 		div#sidebar.ui.sidebar
 			div.ui.menu.fluid.vertical.inverted
 				a.item(ng-click="setCategory('*')", ng-class="{active: search.category == '*'}")
@@ -27,11 +35,17 @@ block content
 					| {{category.label}}
 					span.label(ng-show="category.total > 0") {{category.total}}
 
+	.container-fluid.gallery-container
+		//div.row.row-offcanvas.row-offcanvas-left
+
+
 		//div.col-xs-12.col-sm-10
 
 		div.row
+			
 			div.col-sm-6.col-md-4.col-lg-3(ng-repeat="gallery in galleries | filter:searchFilter")
-				img.img-responsive.gallery(ng-src="{{getThumbnailUrl(gallery)}}", alt="{{gallery.title}}")
+				img.img-responsive.gallery(ng-src="{{getThumbnailUrl(gallery)}}", ng-if="!loading",alt="{{gallery.title}}")
+				div.place-holder(ng-if="loading")
 						
 						
 		

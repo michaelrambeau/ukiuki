@@ -56,5 +56,13 @@
 @import "semantic/less/modules/sidebar.less";
 
 body{
-	#gradient >  .horizontal-three-colors(#919191; #cbcbcb; 50%; #919191);
+	//#gradient >  .horizontal-three-colors(#4a4949; #dadada; 50%; #919191);
+	#gradient > .radial(#dadada, #4a4949);
+}
+.table-layout{
+	display: table;
+	width: 100%;
+	> div{
+		display: table-cell;
+	}
 }

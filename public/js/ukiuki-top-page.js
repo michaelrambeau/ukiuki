@@ -12,13 +12,16 @@ var app = angular.module('app', []);
 app.controller('MainController', function ($scope, $http) {
 	$scope.categories = [];
 	$scope.galleries = [];
+	for(var i=0; i<12; i++) {
+		$scope.galleries.push({});
+	}
 	$scope.search = {
 		category: "*",
 		text: ""
 	};
 	$scope.loading = true;
 	
-	$http.get("api/featuredItems").success(function (data) {
+	if (true) $http.get("api/featuredItems").success(function (data) {
 		$scope.galleries = data.galleries;
 		$scope.categories = data.categories;
 		$scope.loading = false;

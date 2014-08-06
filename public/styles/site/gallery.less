@@ -1,7 +1,28 @@
+@gallery-width: 300px;//size of the gallery pictures
+
 .gallery{
 	margin-bottom: @grid-gutter-width;
 }
 .label{
 	font-size: 0.8em;
 	border-radius: 4px;
+}
+
+.gallery-container{
+	max-width: @gallery-width + @grid-gutter-width;//1 picture per line for small screens
+	@media(min-width: @screen-sm-min){
+		max-width: (@gallery-width + @grid-gutter-width) * 2;//2 pictures per line
+	}
+	@media(min-width: @screen-md-min){
+		max-width: (@gallery-width + @grid-gutter-width) * 3;//3 pictures per line
+	}
+	@media(min-width: @screen-lg-min){
+		max-width: (@gallery-width + @grid-gutter-width) * 4;//4 pictures per line
+	}
+
+}
+.place-holder{
+	height: 300px;
+	text-align: center;
+	opacity: 0.3;
 }

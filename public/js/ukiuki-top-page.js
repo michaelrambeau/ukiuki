@@ -1,19 +1,41 @@
 $(document).ready(function () {
 	var $sidebar = $('.ui.sidebar');
+	var $searchbar = $('.uki-navbar');
+	var $loginBlock = $('#login-block');
+	var $loginCloseBar = $('.leftbar')
+	
 	$sidebar.sidebar({
 		debug: true
 	});
-	$('[data-toggle]').click(function () {
+	$(".navbar-toggle").click(function () {
 		$sidebar.sidebar('toggle');
 	});
+
+	$loginBlock.on('show.bs.collapse', function () {
+		//$searchbar.fadeOut();
+		$searchbar.hide();
+	});
+	$loginBlock.on('hide.bs.collapse', function () {
+		//$searchbar.fadeIn();
+		$searchbar.show();
+	});
+	$loginCloseBar.click(function() {
+		$loginBlock.collapse('hide')
+	});
+	
 });
+
+function adjustHeight(){
+	h = $("img.gallery:first").height()
+	$(".gallery.info").height(h);
+}
 
 var app = angular.module('app', []);
 app.controller('MainController', function ($scope, $http) {
 	$scope.categories = [];
 	$scope.galleries = [];
 	for(var i=0; i<12; i++) {
-		$scope.galleries.push({});
+		$scope.galleries.push({title: i});
 	}
 	$scope.search = {
 		category: "*",
@@ -24,6 +46,7 @@ app.controller('MainController', function ($scope, $http) {
 	if (true) $http.get("api/featuredItems").success(function (data) {
 		$scope.galleries = data.galleries;
 		$scope.categories = data.categories;
+		//adjustHeight();
 		$scope.loading = false;
 		console.info($scope.galleries.length,"items loaded");
 		getStatsByCategory();
@@ -35,7 +58,6 @@ app.controller('MainController', function ($scope, $http) {
 				var found = findCategory(cat._id);
 				if (found) found.total = cat.total;
 			});
-			console.info("Statistics by category", $scope.categories);
 		});
 	} 
 	

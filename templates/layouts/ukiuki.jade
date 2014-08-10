@@ -8,8 +8,74 @@ html(ng-app="app",ng-controller="MainController")
 		meta(http-equiv="X-UA-Compatible" content="IE=edge")
 		title UKiUKi DEV
 		link(href="/styles/site.min.css", rel="stylesheet")
+		link(href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/css/semantic.min.css", rel="stylesheet")
 		
 	body
+	
+		header
+			.container-fluid
+				.table-layout
+					div
+						a(href="/")
+							img.logo(src="/images/logos/u-art.png",alt="UKiUki Art",width="163",height="66")
+					div.hidden-xs.hidden-sm
+						span.motto The most unique, creative space for artists
+					div.right-column.hidden-xs.hidden-sm
+						span.icons.pull-right
+							img(src="/images/logos/icon-facebook.png",alt="Facebook",width="25")
+							img(src="/images/logos/icon-twitter.png",alt="Twitter",width="25")
+							img(src="/images/logos/icon-search.png",alt="Search",width="25")					
+						span.member Are you a member? 
+						span
+							a.link.collapsed(href="#login-block", data-toggle="collapse", data-parent="header") Login | Register
+				
+			div#login-block.collapse.panel-collapse
+				div.inner
+					.container
+						div.ui.two.column.middle.aligned.relaxed.grid.basic.segment
+							.column
+								div.ui.inverted.form
+									div.field
+										label Email
+										div.ui.left.labeled.icon.input
+											input(name="username", type="text")
+											i.icon.user
+									div.field
+										label Password
+										div.ui.left.labeled.icon.input
+											input(name="password", type="pasword")
+											i.icon.lock
+									div.ui.purple.submit.button LOGIN
+							.ui.vertical.inverted.divider OR
+							.column.center.aligned
+								button.teal.ui.labeled.icon.button
+									i.signup.icon
+									| Join us, sign up!
+								
+					.leftbar
+						.close-text CLOSE
+						.close-icon
+					
+							i.close.icon
+						
+				div.footer
+					.container-fluid
+						button.ui.button.labeled.icon.facebook.mini
+							i.icon.facebook
+							| Sign in with Facebook
+						button.ui.button.labeled.icon.google.plus.mini
+							i.icon.google.plus
+							| Sign in with Google
+							
+
+
+			div.uki-navbar
+				.container-fluid
+					button.btn.navbar-toggle(data-toggleXX="offcanvas",style="display:block;")
+						div.bars
+							- for(var i=0; i<3; i++)
+								span.icon-bar
+						div.text Filter by category	
 	
 		block content
 		
@@ -19,19 +85,19 @@ html(ng-app="app",ng-controller="MainController")
 					div.col.col-md-4
 						h2 About us
 						div.ui.menu.vertical.fluid
-							a.item(href="#") What is UKiUKi?
-							a.item(href="#") Get Professional
-							a.item(href="#") FAQs
-							a.item(href="#") Mature Audience conditions
-							a.item(href="#") Terms of use
-							a.item(href="#") Report a bug
-							a.item(href="#") Contact us
+							a.item(href="/whatisukiuki") What is UKiUKi?
+							a.item.disabled(href="#") Get Professional
+							a.item.disabled(href="#") FAQs
+							a.item.disabled(href="#") Mature Audience conditions
+							a.item.disabled(href="#") Terms of use
+							a.item.disabled(href="#") Report a bug
+							a.item.disabled(href="#") Contact us
 					div.col.col-md-4
 						h2 Latest news
 						div.ui.menu.vertical.fluid
-							a.item(href="#") Title of news #1
-							a.item(href="#") Title of news #2
-							a.item(href="#") Title of news #3
+							a.disabled.item(href="#") Title of news #1
+							a.disabled.item(href="#") Title of news #2
+							a.disabled.item(href="#") Title of news #3
 	
 							
 					div.col.col-md-4

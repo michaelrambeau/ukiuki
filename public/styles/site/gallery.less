@@ -2,13 +2,49 @@
 
 .gallery{
 	margin-bottom: @grid-gutter-width;
+	background-color: #444444;
+	color: #858585;
+	text-align: center;
 }
+
+.info {
+	position: relative;
+	color: #858585;
+	.inner{
+		position: absolute;
+		text-align: center;
+		width: 100%;
+		top: 50%;
+		margin-top: -40px;
+		padding: 0 20px;
+	}
+	.btn{
+		background-color: transparent;
+		border-color:  #858585;
+		border-radius: 0;
+		color: #858585;
+		&:hover{
+			color: white;
+			border-color:  white;
+		}
+	}
+	strong{
+		color: lighten(@uki-purple,10%);
+	}
+}
+
 .label{
 	font-size: 0.8em;
 	border-radius: 4px;
 }
 
+.gallery-block{
+	#gradient > .radial(#dadada, #4a4949);
+	padding: @grid-gutter-width 0 0;
+}
+
 .gallery-container{
+	
 	max-width: @gallery-width + @grid-gutter-width;//1 picture per line for small screens
 	@media(min-width: @screen-sm-min){
 		max-width: (@gallery-width + @grid-gutter-width) * 2;//2 pictures per line

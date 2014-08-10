@@ -27,6 +27,7 @@
 @import "bootstrap/buttons.less";
 
 @import "bootstrap/navbar.less";
+@import "bootstrap/component-animations.less";
 
 // Utility classes
 @import "bootstrap/utilities.less";
@@ -51,13 +52,15 @@
 @import "site/gallery.less";
 @import "site/footer.less";
 @import "site/offcanvas.less";
+@import "site/login.less";
 
 @import "semantic/less/collections/menu.less";
 @import "semantic/less/modules/sidebar.less";
+@import "semantic/less/modules/dropdown.less";
 
 body{
 	//#gradient >  .horizontal-three-colors(#4a4949; #dadada; 50%; #919191);
-	#gradient > .radial(#dadada, #4a4949);
+	//#gradient > .radial(#dadada, #4a4949);
 }
 .table-layout{
 	display: table;
@@ -65,4 +68,14 @@ body{
 	> div{
 		display: table-cell;
 	}
+}
+
+h1{
+	margin-top: 0;
+}
+.main-content{//main container used for static pages ("What is UKiUKi ?" pagefor example)
+	padding: 20px 0;
+	h1, h2, h3{
+		color: @uki-purple;
+	}	
 }

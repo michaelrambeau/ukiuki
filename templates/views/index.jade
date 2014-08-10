@@ -1,29 +1,6 @@
 extends ../layouts/ukiuki
 
 block content
-	header
-		.container-fluid
-			.table-layout
-				div
-					img.logo(src="/images/logos/u-art.png",alt="UKiUki Art",width="163",height="66")
-				div.hidden-xs.hidden-sm
-					span.motto The most unique, creative space for artists
-				div.right-column.hidden-xs.hidden-sm				
-					span.member Are you a member? 
-					a.link(href="#") Login | Register
-					span.icons
-						img(src="/images/logos/icon-facebook.png",alt="Facebook",width="25")
-						img(src="/images/logos/icon-twitter.png",alt="Twitter",width="25")
-						img(src="/images/logos/icon-search.png",alt="Search",width="25")
-			
-		div.uki-navbar
-			.container-fluid
-				button.btn.navbar-toggle(data-toggle="offcanvas",style="display:block;")
-					div.bars
-						- for(var i=0; i<3; i++)
-							span.icon-bar
-					div.text Filter by category
-
 
 	- if (true)
 		div#sidebar.ui.sidebar
@@ -31,26 +8,47 @@ block content
 				a.item(ng-click="setCategory('*')", ng-class="{active: search.category == '*'}")
 					| All
 					span.label {{galleries.length}}
-				a.item(ng-repeat="category in categories", ng-click="setCategory(category.value)", ng-class="{active: search.category == category.value}")
+				a.item(ng-repeat="category in categories", ng-click="setCategory(category.value)", ng-class="{active: search.category == category.value, disabled: !category.total > 0}")
 					| {{category.label}}
 					span.label(ng-show="category.total > 0") {{category.total}}
 
-	.container-fluid.gallery-container
+
+	.gallery-block: .container-fluid.gallery-container
 		//div.row.row-offcanvas.row-offcanvas-left
 
 
 		//div.col-xs-12.col-sm-10
 
 		div.row
-			
+			div.col-sm-6.col-md-4.col-lg-3.hidden-xs
+				.info
+					img.img-responsive.gallery.info(src="/images/gallery.gif")
+					.inner
+						p What is ukiuki?
+						a.btn(href="/whatisukiuki") Click here
+				//img.img-responsive.gallery(src="holder.js/300x300/auto/text:What is ukiuki?")
+				//div.gallery.info
+					.inner What is ukiuki?
+				
 			div.col-sm-6.col-md-4.col-lg-3(ng-repeat="gallery in galleries | filter:searchFilter")
-				img.img-responsive.gallery(ng-src="{{getThumbnailUrl(gallery)}}", ng-if="!loading",alt="{{gallery.title}}")
+				img.img-responsive.gallery(src="/images/gallery.gif",ng-src="{{getThumbnailUrl(gallery)}}", ng-if="!loading",alt="{{gallery.title}}")
 				div.place-holder(ng-if="loading")
+			div.col-sm-6.col-md-4.col-lg-3
+				.info
+					img.img-responsive.gallery.info(src="/images/gallery.gif")
+					.inner
+						p
+							| UKiUKi allows you to 
+							strong customize 
+							| your site using your own banners, colours and wallpapers.
+								
 						
 						
 		
 block js
 	script(src="/js/lib/angular/angular.min.js")
-	script(src="/styles/semantic/less/modules/sidebar.js")
+	//script(src="/styles/semantic/less/modules/sidebar.js")
+	script(src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/javascript/semantic.min.js")
 	script(src="/js/ukiuki-top-page.js")
+	script(src="//cdnjs.cloudflare.com/ajax/libs/holder/2.3.1/holder.js")
 	//script(src="/js/ukiuki.js")

@@ -67,7 +67,6 @@ Gallery.add({
 	//images: { type: Types.CloudinaryImages }
 });
 
-console.dir(keystone.session);
 Gallery.defaultColumns = 'title, category, author|20%, publishedDate|20%';
 
 Gallery.register();

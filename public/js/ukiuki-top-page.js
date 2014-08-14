@@ -83,8 +83,8 @@ app.controller('MainController', function ($scope, $http) {
 	$scope.getThumbnailUrl = function (gallery) {
 		var url = gallery.image.url;
 		//Example of URL "http://res.cloudinary.com/michaelrambeau/image/upload/v1406960129/bfwg81wgizopp1wumizj.jpg"
-		var re = /v\d*/;
-		return url.replace(re, "t_ukiuki2");//use a "named transformation" that creates the thumbnail (300px wide)
+		var re = /\/v\d*\//;
+		return url.replace(re, "/t_ukiuki2/");//use a "named transformation" that creates the thumbnail (300px wide)
 	};
 	
 	

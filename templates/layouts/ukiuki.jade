@@ -7,8 +7,8 @@ html(ng-app="app",ng-controller="MainController")
 		meta(name="viewport", content="width=device-width, initial-scale=1.0")
 		meta(http-equiv="X-UA-Compatible" content="IE=edge")
 		title UKiUKi DEV
-		link(href="/styles/site.min.css", rel="stylesheet")
 		link(href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/css/semantic.min.css", rel="stylesheet")
+		link(href="/styles/site.min.css", rel="stylesheet")
 		
 	body
 	
@@ -22,9 +22,9 @@ html(ng-app="app",ng-controller="MainController")
 						span.motto The most unique, creative space for artists
 					div.right-column.hidden-xs.hidden-sm
 						span.icons.pull-right
-							img(src="/images/logos/icon-facebook.png",alt="Facebook",width="25")
-							img(src="/images/logos/icon-twitter.png",alt="Twitter",width="25")
-							img(src="/images/logos/icon-search.png",alt="Search",width="25")					
+							img(src="/images/logos/icon-facebook.png", alt="Facebook", width="25")
+							img(src="/images/logos/icon-twitter.png", alt="Twitter", width="25")
+							img(src="/images/logos/icon-search.png", alt="Search", width="25")
 						span.member Are you a member? 
 						span
 							a.link.collapsed(href="#login-block", data-toggle="collapse", data-parent="header") Login | Register
@@ -45,7 +45,7 @@ html(ng-app="app",ng-controller="MainController")
 										div.ui.left.labeled.icon.input
 											input(name="password", type="pasword")
 											i.icon.lock
-									div.ui.purple.submit.button LOGIN
+									div.ui.login.submit.button LOGIN
 							.ui.vertical.inverted.divider OR
 							.column.center.aligned
 								button.teal.ui.labeled.icon.button

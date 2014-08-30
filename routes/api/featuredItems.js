@@ -8,7 +8,10 @@ exports = module.exports = function (req, res) {
 			return res.json({
 				success: true,
 				galleries: records,
-				categories: Gallery.categories
+				categories: Gallery.categories,
+				user: req.user,
+				version: 'O.1'
+			
 			});
 		});
 	

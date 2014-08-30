@@ -47,7 +47,16 @@ exports = module.exports = function(app) {
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
 	
+	//API
+	app.all('/api*', keystone.initAPI);
+	
 	app.all('/api/featuredItems', routes.api.featuredItems);
 	app.all('/api/stats', routes.api.stats);
+	
+	//Signup
+	app.post('/api/signup', routes.api.session.signup);
+	//Sign in
+	app.post('/api/signin', routes.api.session.signin);
+	app.post('/api/signout', routes.api.session.signout);
 	
 };

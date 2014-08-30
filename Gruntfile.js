@@ -10,7 +10,7 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	// Time how long tasks take. Can help when optimizing build times
-	require('time-grunt')(grunt);
+	//mike require('time-grunt')(grunt);
 
 	// Project configuration.
 	grunt.initConfig({
@@ -68,6 +68,16 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		
+		coffee:{
+			app: {
+				files: {
+					'public/js/ukiuki-app.js': ['src/script/*.coffee']		
+				}					
+			}	
+		},
+
+
 
 		watch: {
 			js: {
@@ -94,6 +104,10 @@ module.exports = function(grunt) {
 				options: {
 					livereload: true
 				}
+			},
+			coffee: {
+				files: ['src/script/*.coffee'],
+				tasks: ['coffee']
 			}
 		}
 	});
@@ -117,5 +131,6 @@ module.exports = function(grunt) {
 		grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
 		grunt.task.run(['serve:' + target]);
 	});
+ //not needed grunt.loadNpmTasks('grunt-contrib-coffee');
 
 };

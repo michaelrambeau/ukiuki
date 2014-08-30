@@ -7,8 +7,10 @@ html(ng-app="app",ng-controller="MainController")
 		meta(name="viewport", content="width=device-width, initial-scale=1.0")
 		meta(http-equiv="X-UA-Compatible" content="IE=edge")
 		title UKiUKi DEV
-		link(href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/css/semantic.min.css", rel="stylesheet")
+		//link(href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/css/semantic.min.css", rel="stylesheet")
 		link(href="/styles/site.min.css", rel="stylesheet")
+		link(href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css", rel="stylesheet")
+		
 		
 	body
 	
@@ -16,62 +18,102 @@ html(ng-app="app",ng-controller="MainController")
 			.container-fluid
 				.table-layout
 					div
-						a(href="/")
+						a(href, ui-sref="browse")
 							img.logo(src="/images/logos/u-art.png",alt="UKiUki Art",width="163",height="66")
-					div.hidden-xs.hidden-sm
+					div.visible-lg
 						span.motto The most unique, creative space for artists
-					div.right-column.hidden-xs.hidden-sm
-						span.icons.pull-right
+					div.right-column
+						span.icons.pull-right.hidden-mobile
 							img(src="/images/logos/icon-facebook.png", alt="Facebook", width="25")
 							img(src="/images/logos/icon-twitter.png", alt="Twitter", width="25")
 							img(src="/images/logos/icon-search.png", alt="Search", width="25")
-						span.member Are you a member? 
-						span
-							a.link.collapsed(href="#login-block", data-toggle="collapse", data-parent="header") Login | Register
+						div(ng-show="user == null")
+							span.member.hidden-xs.hidden-sm.hidden-md Are you a member? 
+							span
+								a.link.collapsed(href="#login-block", data-toggle="collapse", data-parent="header") Login | Register
+						div(ng-show="user != null")
+							span.member {{user.username + ' '}}
+							span
+								a.link(href="", ng-click="signout()") Sign out
 				
-			div#login-block.collapse.panel-collapse
+			div#login-block.collapse.panel-collapse.dark-form
 				div.inner
-					.container
-						div.ui.two.column.middle.aligned.relaxed.grid.basic.segment
-							.column
-								div.ui.inverted.form
+					.topbar.close-link.visible-xs.visible-sm
+						.close-icon
+							.icon ×
+					.container-fluid
+						//div.ui.two.column.middle.aligned.relaxed.stackable.grid
+						div.row
+							//.column
+							.col-md-6
+								form.ui.inverted.form(name="signinForm", novalidate, ng-controller="SigninController", ng-submit="submit()", ng-class="{submitted: submitted}")
+									h2 Login {{status}}
+									p Existing members please enter your details below to login.
 									div.field
-										label Email
+										//label Email
 										div.ui.left.labeled.icon.input
-											input(name="username", type="text")
+											input(ng-model="email", type="text", required, ng-minlength="4", placeholder="Username")
 											i.icon.user
 									div.field
-										label Password
+										//label Password
 										div.ui.left.labeled.icon.input
-											input(name="password", type="pasword")
+											input(ng-model="password", required, type="password", placeholder="Password")
 											i.icon.lock
-									div.ui.login.submit.button LOGIN
-							.ui.vertical.inverted.divider OR
-							.column.center.aligned
-								button.teal.ui.labeled.icon.button
-									i.signup.icon
-									| Join us, sign up!
+									.field.hidden-mobile(style="visibility: hidden;")
+										input(name="xxx")
+									.table-layout.action-bar
+										.div
+											a(href="#") I've forgotten my password.
+										.div.text-right
+											button.btn.dark-button(type="SUBMIT",ng-class="{disabled: status == 'LOADING'}") LOGIN
+									.alert.alert-danger(ng-show="status == 'ERROR'") Login failure. Please check your username and password.
+							
+							//.ui.vertical.inverted.divider.hidden-mobile OR
+							
+							//.column.aligned
+							.col-md-6
+								form(name="signupForm", novalidate, ng-controller="SignupController", ng-submit="submit()",ng-class="{submitted: submitted}")
+									hr.visible-xs.visible-sm
+									h2 Join us!
+									p Register to become a member.
+									.field
+										input(ng-model="email", type="email", required, placeholder="Your email address", value="mike")
+									.field
+										input(ng-model="password", type="password", required, placeholder="Choose a password", value="mike")
+									.field
+										input(ng-model="username", type="text", required, ng-minlength="4", placeholder="Choose a username", value="xyz")
+									div.action-bar.text-right
+										button.btn.dark-button(type="submit", ng-class="{disabled: status == 'LOADING'}") REGISTER
+									.alert.alert-danger(ng-show="status == 'ERROR'", ng-switch="error")
+										span(ng-switch-when="USERNAME_TAKEN") Username "{{username}}" is already taken
+										span(ng-switch-when="EMAIL_TAKEN") Email "{{email}}" is already taken
 								
-					.leftbar
+	
+								
+					.leftbar.close-link.hidden-xs.hidden-sm
 						.close-text CLOSE
 						.close-icon
-					
-							i.close.icon
+							.icon ×
+							//i.close.icon
+							//i.fa.fa-close
+							
 						
 				div.footer
 					.container-fluid
 						button.ui.button.labeled.icon.facebook.mini
-							i.icon.facebook
-							| Sign in with Facebook
+							//i.icon.facebook
+							i.icon.fa.fa-facebook
+							| Facebook
 						button.ui.button.labeled.icon.google.plus.mini
-							i.icon.google.plus
-							| Sign in with Google
+							//i.icon.google.plus
+							i.icon.fa.fa-google
+							| Google
 							
 
 
 			div.uki-navbar
 				.container-fluid
-					button.btn.navbar-toggle(data-toggleXX="offcanvas",style="display:block;")
+					button.btn.navbar-toggle(data-toggleXX="offcanvas",style="display:block;",ng-show="$state.includes('browse')")
 						div.bars
 							- for(var i=0; i<3; i++)
 								span.icon-bar
@@ -85,7 +127,8 @@ html(ng-app="app",ng-controller="MainController")
 					div.col.col-md-4
 						h2 About us
 						div.ui.menu.vertical.fluid
-							a.item(href="/whatisukiuki") What is UKiUKi?
+							//a.item(href="/whatisukiuki") What is UKiUKi?
+							a.item(ui-sref="whatisukiuki") What is UKiUKi?
 							a.item.disabled(href="#") Get Professional
 							a.item.disabled(href="#") FAQs
 							a.item.disabled(href="#") Mature Audience conditions

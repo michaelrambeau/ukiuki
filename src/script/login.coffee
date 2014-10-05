@@ -56,8 +56,7 @@ app.controller "SigninController", ($scope, $http) ->
 		$http.post("/api/signin", formData).success((data) ->
 			$scope.status = "SUCCESS"
 			console.log data
-			$scope.$parent.user = data.user
-			$loginBlock.collapse "hide"
+			$scope.$emit 'login', data
 			return
 		).error (data) ->
 			$scope.status = "ERROR"

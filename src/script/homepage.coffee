@@ -2,31 +2,6 @@ adjustHeightOLD = ->
 	h = $("img.gallery:first").height()
 	$(".gallery.info").height h
 	return
-$sidebar = undefined
-$searchbar = undefined
-$loginBlock = undefined
-$loginCloseBar = undefined
-
-$(document).ready ->
-	$searchbar = $(".uki-navbar")
-	$loginBlock = $("#login-block")
-	$loginCloseBar = $(".leftbar,.topbar")
-	$loginBlock.on "show.bs.collapse", ->
-		$searchbar.hide()
-		return
-
-	$loginBlock.on "shown.bs.collapse", ->
-		$loginBlock.find("input:first").focus()
-		return
-
-	$loginBlock.on "hide.bs.collapse", ->
-		$searchbar.show()
-		return
-
-	$loginCloseBar.click ->
-		$loginBlock.collapse "hide"
-		return
-
 
 
 app.controller "BrowseController", ($scope, $http) ->
@@ -60,13 +35,12 @@ app.controller "BrowseController", ($scope, $http) ->
 		return
 
 	if true
-		$http.get("api/featuredItems").success (data) ->
+		$http.get("api/featured-items").success (data) ->
 			$scope.galleries = data.galleries
 			$scope.categories = data.categories
 			$scope.loading = false
 			console.info $scope.galleries.length, "items loaded"
 			getStatsByCategory()
-			$scope.user = data.user
 			return
 
 	$scope.searchFilter = (item) ->
@@ -79,11 +53,6 @@ app.controller "BrowseController", ($scope, $http) ->
 		dateOnly = source.split(" ")[0]
 		ymd = dateOnly.split("-")
 		moment(new Date(ymd[0], ymd[1], ymd[2])).fromNow()
-
-	$scope.getThumbnailUrl = (gallery) ->
-		url = gallery.image.url
-		re = /\/v\d*\//
-		url.replace re, "/t_ukiuki2/"
 
 	$scope.categories = []
 	$scope.search =

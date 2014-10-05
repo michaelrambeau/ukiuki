@@ -6,7 +6,9 @@ var keystone = require('keystone'),
  * ==========
  */
 
-var User = new keystone.List('User');
+var User = new keystone.List('User', {
+	map: { name: 'username' }
+});
 
 User.add({
 	username: { type: String, initial: true, required: true, index: true },
@@ -27,6 +29,7 @@ User.schema.virtual('canAccessKeystone').get(function() {
  */
 
 User.relationship({ ref: 'Post', path: 'author' });
+User.relationship({ ref: 'Gallery', path: 'author' });
 
 
 /**

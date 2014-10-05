@@ -5,6 +5,11 @@ exports = module.exports = function (req, res) {
 	var Gallery = keystone.list("Gallery");
 	Gallery.model.aggregate([
 	{
+		"$match":{
+			"featured": true
+		}
+	},
+	{
 		"$group":{
 			"_id": "$category",
 			"total": {$sum: 1}

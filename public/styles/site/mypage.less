@@ -1,0 +1,44 @@
+.mypage-header{
+	//margin: 20px 0;
+	padding: 20px 0 0;
+	background: transparent url('site/images/login-block-bg.png');
+	color: white;
+	h2{
+		text-align: center;
+		margin: 0;
+		color: white;
+		text-shadow: 0 1px 1px black;
+	}
+	border-bottom: 5px solid white;
+}
+.mypage-tabs{
+	//margin: 0 auto;
+	//max-width: 500px;
+	margin-top: 20px;
+	text-align: center;//to align horizontally the menu (it is possible thank to inline-block property applied to menu items
+	a{
+		display: inline-block;
+		//float: left;
+		padding: 5px 10px 25px;
+		color: white;
+		&:hover{
+			color: white;
+
+		}
+		&.selected{
+			background-color: white;
+			color: @uki-purple;
+			&:hover, &:focus{
+				text-decoration: none;
+			}
+		}
+	}
+}
+.progress-bar{
+	margin-top: 10px;
+}
+.form-upload{
+	.alert{
+		margin-top: 10px;
+	}
+}

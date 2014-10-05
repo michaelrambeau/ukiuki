@@ -1,0 +1,33 @@
+<ui-view></ui-view>
+
+<!--<div class="container-fluid">
+	<p ng-show="$state.current.name == 'mypage.galleries'">
+		<a class="btn btn-primary btn-block" ui-sref="mypage.galleries.upload">
+			<i class="fa fa-plus"></i>
+			CREATE
+		</a>
+	</p>
+</div>-->
+
+
+
+<div class="gallery-block">
+	<div class="container-fluid gallery-container">
+		<div class="row">
+
+			<div class="col-sm-6 col-md-4 col-lg-3" ng-show="$state.current.name == 'mypage.galleries'">
+				<div class="gallery-text-block">
+					<img class="img-responsive" src="/images/gallery.gif">
+					<div class="inner">
+						<a class="btn dark-button" href="" ui-sref="mypage.galleries.upload">
+							<i class="fa fa-plus"></i>
+							CREATE
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<gallery data="gallery" ng-repeat="gallery in galleries"></gallery>
+		</div>
+	</div>
+</div>

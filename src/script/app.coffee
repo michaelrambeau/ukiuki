@@ -1,6 +1,8 @@
 window.app = angular.module("app", [
 	"ui.router"
 	"ct.ui.router.extras"
+	"angularFileUpload"
+	"cloudinary"
 ])
 app.run [
 	"$rootScope"
@@ -35,6 +37,29 @@ app.config ($stateProvider, $urlRouterProvider) ->
 				whatisukiuki:
 					templateUrl: "html/whatisukiuki.html"
 			deepStateRedirect: true				
-			sticky: true		
+			sticky: true
+
+		"mypage":
+			url: "/mypage"
+			views:
+				mypage:
+					templateUrl: "html/mypage/index.html"
+			deepStateRedirect: true
+			sticky: true
+		"mypage.galleries":
+			url: "/galleries"
+			templateUrl: "html/mypage/user-galleries.html"
+			controller: 'MyGalleriesController'
+		"mypage.home":
+			url: "/home"
+			templateUrl: "html/mypage/home.html"
+		"mypage.blog":
+			url: "/blog"
+			templateUrl: "html/mypage/blog.html"
+		"mypage.galleries.upload":
+			url: "/upload"
+			templateUrl: "html/mypage/upload-gallery.html"
+			controller: 'MyPageController'
+
 	for key,options of states
-		$stateProvider.state key, options	
+		$stateProvider.state key, options

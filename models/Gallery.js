@@ -63,7 +63,8 @@ Gallery.add({
 	category: { type: Types.Select, options: categories, index: true },
 	publishedDate: { type: Date, default: Date.now },
 	image: { type: Types.CloudinaryImage },
-	author: { type: Types.Relationship, ref: 'User', index: true }
+	author: { type: Types.Relationship, ref: 'User', index: true },
+	featured: { type: Boolean}
 	//images: { type: Types.CloudinaryImages }
 });
 

@@ -1,13 +1,25 @@
 var async = require('async'),
 	keystone = require('keystone'),
-	User = keystone.list("User");
+	User = keystone.list("User"),
+	_ = require('underscore');
 
 
+//request launched by the main controller to get data about the current user.
+module.exports.getUserData = function(req, res) {
+	var user = null;
+	if (req.user) {
+		user = _.clone(req.user.toObject());
+		delete user.password;
+	}
+	res.apiResponse({
+		status: 'OK',
+		user: user
+	});
+};
 
 module.exports.signin = function (req, res) {
 	var email = req.body.email;
 	var password = req.body.password;
-	
 	var onSuccess = function () {
 		console.log("login OK!");
 		res.json({
@@ -50,7 +62,6 @@ module.exports.signup = function (req, res) {
 				cb(null, result);
 			});
 		}
-	
 	]
 	,
 	function(err, results) {
@@ -104,7 +115,7 @@ var checkUsername = function (username, cb) {
 			if (err) throw error;
 			cb(records.length == 0);
 		});	
-}
+};
 /*
 Return true if the email address is unique
 */

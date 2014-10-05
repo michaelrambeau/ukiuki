@@ -50,7 +50,8 @@ exports = module.exports = function(app) {
 	//API
 	app.all('/api*', keystone.initAPI);
 	
-	app.all('/api/featuredItems', routes.api.featuredItems);
+	app.all('/api/featured-items', routes.api.galleryList.getFeaturedGalleries);
+	app.all('/api/user-galleries/:userId', routes.api.galleryList.getUserGalleries);
 	app.all('/api/stats', routes.api.stats);
 	
 	//Signup
@@ -59,4 +60,9 @@ exports = module.exports = function(app) {
 	app.post('/api/signin', routes.api.session.signin);
 	app.post('/api/signout', routes.api.session.signout);
 	
+	//data about the current user (used by the MainController)
+	app.get('/api/user-data', routes.api.session.getUserData);
+
+	app.post('/api/upload-gallery', routes.api.gallery.uploadGallery);
+
 };

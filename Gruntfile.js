@@ -61,6 +61,7 @@ module.exports = function(grunt) {
 			debug: {
 				script: 'keystone.js',
 				options: {
+					ignore: ['src/**/*.coffee'],
 					nodeArgs: ['--debug'],
 					env: {
 						port: config.port
@@ -72,7 +73,7 @@ module.exports = function(grunt) {
 		coffee:{
 			app: {
 				files: {
-					'public/js/ukiuki-app.js': ['src/script/*.coffee']		
+					'public/js/ukiuki-app.js': ['src/script/**/*.coffee']
 				}					
 			}	
 		},

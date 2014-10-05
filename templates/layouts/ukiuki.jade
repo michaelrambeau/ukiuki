@@ -7,13 +7,15 @@ html(ng-app="app",ng-controller="MainController")
 		meta(name="viewport", content="width=device-width, initial-scale=1.0")
 		meta(http-equiv="X-UA-Compatible" content="IE=edge")
 		title UKiUKi DEV
-		//link(href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/css/semantic.min.css", rel="stylesheet")
+		link(href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/css/semantic.min.css", rel="stylesheet")
 		link(href="/styles/site.min.css", rel="stylesheet")
 		link(href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css", rel="stylesheet")
 		
 		
 	body
-	
+		div#spinner.ui.page.active.dimmer
+			div.ui.large.loader
+
 		header
 			.container-fluid
 				.table-layout
@@ -21,18 +23,22 @@ html(ng-app="app",ng-controller="MainController")
 						a(href, ui-sref="browse")
 							img.logo(src="/images/logos/u-art.png",alt="UKiUki Art",width="163",height="66")
 					div.visible-lg
-						span.motto The most unique, creative space for artists
+						span.motto(ng-hide="isLoggedin()") The most unique, creative space for artists
+						//span.motto(ng-show="isLoggedin()")
+							a(ui-sref="mypage.galleries") My UKiUKI
 					div.right-column
 						span.icons.pull-right.hidden-mobile
 							img(src="/images/logos/icon-facebook.png", alt="Facebook", width="25")
 							img(src="/images/logos/icon-twitter.png", alt="Twitter", width="25")
 							img(src="/images/logos/icon-search.png", alt="Search", width="25")
-						div(ng-show="user == null")
+						div(ng-hide="isLoggedin()")
 							span.member.hidden-xs.hidden-sm.hidden-md Are you a member? 
 							span
 								a.link.collapsed(href="#login-block", data-toggle="collapse", data-parent="header") Login | Register
-						div(ng-show="user != null")
-							span.member {{user.username + ' '}}
+						div(ng-show="isLoggedin()")
+							span.member
+								a(ui-sref="mypage.galleries") {{user.username}}
+								|
 							span
 								a.link(href="", ng-click="signout()") Sign out
 				
@@ -46,19 +52,13 @@ html(ng-app="app",ng-controller="MainController")
 						div.row
 							//.column
 							.col-md-6
-								form.ui.inverted.form(name="signinForm", novalidate, ng-controller="SigninController", ng-submit="submit()", ng-class="{submitted: submitted}")
+								form(name="signinForm", novalidate, ng-controller="SigninController", ng-submit="submit()", ng-class="{submitted: submitted}")
 									h2 Login {{status}}
 									p Existing members please enter your details below to login.
 									div.field
-										//label Email
-										div.ui.left.labeled.icon.input
-											input(ng-model="email", type="text", required, ng-minlength="4", placeholder="Username")
-											i.icon.user
+										input(ng-model="email", type="text", required, ng-minlength="4", placeholder="Username")
 									div.field
-										//label Password
-										div.ui.left.labeled.icon.input
-											input(ng-model="password", required, type="password", placeholder="Password")
-											i.icon.lock
+										input(ng-model="password", required, type="password", placeholder="Password")
 									.field.hidden-mobile(style="visibility: hidden;")
 										input(name="xxx")
 									.table-layout.action-bar
@@ -150,4 +150,3 @@ html(ng-app="app",ng-controller="MainController")
 		script(src='/js/lib/bootstrap/bootstrap-3.2.0.min.js')
 		
 		block js
-	

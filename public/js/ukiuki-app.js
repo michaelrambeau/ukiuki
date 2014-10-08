@@ -436,7 +436,7 @@
           url: 'https://api.cloudinary.com/v1_1/' + config.cloud_name + '/upload',
           data: {
             upload_preset: config.upload_preset,
-            tags: $scope.user.username + " " + $scope.category
+            tags: $scope.user.username + "," + $scope.category
           },
           file: file
         });

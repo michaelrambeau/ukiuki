@@ -1,4 +1,4 @@
-app.controller "MyPageController", ($scope, $upload, $http) ->
+app.controller "MyPageController", ($scope, $upload, $http, $state, Categories) ->
 	console.log "MyPageController", $scope.user
 	config =
 		cloud_name: 'ukiukidev'
@@ -13,6 +13,9 @@ app.controller "MyPageController", ($scope, $upload, $http) ->
 
 	#$scope[key] = value for key, value of options
 
+	Categories.getAll (data) ->
+		$scope.categories = data
+
 	$.cloudinary.config 'cloud_name', config.cloud_name
 	$.cloudinary.config 'upload_preset', config.upload_preset
 
@@ -22,7 +25,7 @@ app.controller "MyPageController", ($scope, $upload, $http) ->
 				url: 'https://api.cloudinary.com/v1_1/' + config.cloud_name + '/upload'
 				data:
 					upload_preset: config.upload_preset
-					tags: $scope.user.username
+					tags: $scope.user.username + " " + $scope.category
 				file: file
 
 			$scope.upload.progress (evt) ->
@@ -43,10 +46,13 @@ app.controller "MyPageController", ($scope, $upload, $http) ->
 		url = "/api/upload-gallery"
 		data =
 			title: $scope.title
+			category: $scope.category
 			image: JSON.stringify $scope.gallery
 		$http.post(url, data)
 			.success (result) ->
 				console.info "The gallery has been uploaded!"
+				$scope.$emit "upload", data
+				$state.go("mypage.galleries")
 
 	$scope.test = ->
 		console.info $scope.isFormValid()

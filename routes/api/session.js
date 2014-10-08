@@ -62,8 +62,7 @@ module.exports.signup = function (req, res) {
 				cb(null, result);
 			});
 		}
-	]
-	,
+	],
 	function(err, results) {
 		//res.json(results);
 		if (results[0] == false) return res.apiError({

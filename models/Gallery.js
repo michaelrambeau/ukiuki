@@ -1,5 +1,6 @@
 var keystone = require('keystone'),
 	Types = keystone.Field.Types;
+var cloudinary = require('../node_modules/keystone/node_modules/cloudinary');
 
 /**
  * Gallery Model
@@ -67,6 +68,21 @@ Gallery.add({
 	featured: { type: Boolean}
 	//images: { type: Types.CloudinaryImages }
 });
+
+Gallery.schema.pre('remove', function(next) {
+	var id = this.image.public_id
+	console.log("Pre remove event, delete the picture from cloudinary", this.image);
+	cloudinary.api.delete_resources(id, function (result) {
+		if (result.deleted.id == "deleted") {
+			console.log("OK, the picture deleted on cloudinary", id);
+		} else {
+			console.log("A problem occurred when trying to remove the picture", result);
+		}
+		next();
+	})
+
+});
+
 
 Gallery.defaultColumns = 'title, category, author|20%, publishedDate|20%';
 

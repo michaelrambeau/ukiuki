@@ -335,6 +335,7 @@
   });
 
   app.controller("MainController", function($scope, $http, $state) {
+    var event, events, _i, _len;
     console.log("Main controller");
     $scope.user = null;
     $scope.getUserData = function() {
@@ -359,20 +360,17 @@
         console.log("Sign out error!");
       });
     };
-    $scope.$on("signup-submission", function(ev, data) {
-      if (ev.targetScope === $scope) {
-        return;
-      }
-      console.log("on event");
-      $scope.$broadcast("signup-submission", data);
-    });
-    $scope.$on("signin-submission", function(ev, data) {
-      console.log("on event");
-      if (ev.targetScope === $scope) {
-        return;
-      }
-      $scope.$broadcast("signin-submission", data);
-    });
+    events = ["signup-submission", "signin-submission", "upload"];
+    for (_i = 0, _len = events.length; _i < _len; _i++) {
+      event = events[_i];
+      $scope.$on(event, function(ev, data) {
+        if (ev.targetScope === $scope) {
+          return;
+        }
+        console.log("MainController on event", ev.name);
+        $scope.$broadcast(ev.name, data);
+      });
+    }
     return $scope.$on("login", function(ev, data) {
       console.info(data.user, 'is logged-in.');
       $scope.user = data.user;
@@ -401,6 +399,9 @@
     $scope.$on('authenticated', function() {
       return $scope.getGalleries();
     });
+    $scope.$on('upload', function() {
+      return $scope.getGalleries();
+    });
     if ($scope.user) {
       return $scope.getGalleries();
     }
@@ -409,7 +410,7 @@
 }).call(this);
 
 (function() {
-  app.controller("MyPageController", function($scope, $upload, $http) {
+  app.controller("MyPageController", function($scope, $upload, $http, $state, Categories) {
     var config, options;
     console.log("MyPageController", $scope.user);
     config = {
@@ -421,6 +422,9 @@
       status: 0,
       progress: 0
     };
+    Categories.getAll(function(data) {
+      return $scope.categories = data;
+    });
     $.cloudinary.config('cloud_name', config.cloud_name);
     $.cloudinary.config('upload_preset', config.upload_preset);
     $scope.onFileSelect = function($files) {
@@ -432,7 +436,7 @@
           url: 'https://api.cloudinary.com/v1_1/' + config.cloud_name + '/upload',
           data: {
             upload_preset: config.upload_preset,
-            tags: $scope.user.username
+            tags: $scope.user.username + " " + $scope.category
           },
           file: file
         });
@@ -463,15 +467,35 @@
       url = "/api/upload-gallery";
       data = {
         title: $scope.title,
+        category: $scope.category,
         image: JSON.stringify($scope.gallery)
       };
       return $http.post(url, data).success(function(result) {
-        return console.info("The gallery has been uploaded!");
+        console.info("The gallery has been uploaded!");
+        $scope.$emit("upload", data);
+        return $state.go("mypage.galleries");
       });
     };
     return $scope.test = function() {
       return console.info($scope.isFormValid());
     };
+  });
+
+}).call(this);
+
+(function() {
+  app.factory("Categories", function($http) {
+    var api, categories;
+    categories = {};
+    api = {
+      getAll: function(cb) {
+        return $http.get("api/categories").success(function(data) {
+          categories = data.categories;
+          return cb(categories);
+        });
+      }
+    };
+    return api;
   });
 
 }).call(this);

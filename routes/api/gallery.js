@@ -8,7 +8,7 @@ module.exports.uploadGallery = function(req, res) {
 	//var image = new Types.CloudinaryImage(imageData, '', {});
 	var galleryData = {
 		title: req.body.title,
-		category: "SCULPTURE",
+		category: req.body.category,
 		publishedDate: new Date(),
 		author: req.user,
 		image: imageData

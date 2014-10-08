@@ -38,9 +38,9 @@ html(ng-app="app",ng-controller="MainController")
 						div(ng-show="isLoggedin()")
 							span.member
 								a(ui-sref="mypage.galleries") {{user.username}}
-								|
+								| &nbsp;
 							span
-								a.link(href="", ng-click="signout()") Sign out
+								a.link(href="", ng-click="signout()") SIGN OUT
 				
 			div#login-block.collapse.panel-collapse.dark-form
 				div.inner

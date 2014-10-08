@@ -53,6 +53,7 @@ exports = module.exports = function(app) {
 	app.all('/api/featured-items', routes.api.galleryList.getFeaturedGalleries);
 	app.all('/api/user-galleries/:userId', routes.api.galleryList.getUserGalleries);
 	app.all('/api/stats', routes.api.stats);
+	app.all('/api/categories', routes.api.category.get);
 	
 	//Signup
 	app.post('/api/signup', routes.api.session.signup);

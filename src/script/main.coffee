@@ -52,21 +52,20 @@ app.controller "MainController", ($scope, $http, $state) ->
 
 		return
 
-	$scope.$on "signup-submission", (ev, data) ->
-		
-		# PREVENT INFINITE LOOP ON BROADCAST
-		return	if ev.targetScope is $scope
-		console.log "on event"
-		$scope.$broadcast "signup-submission", data
-		return
+	#Listen for events from child scopes and broadcast to other child scopes
+	events = [
+		"signup-submission"
+		 "signin-submission"
+		"upload"
+	]
 
-	$scope.$on "signin-submission", (ev, data) ->
-		console.log "on event"
-		
-		# PREVENT INFINITE LOOP ON BROADCAST
-		return	if ev.targetScope is $scope
-		$scope.$broadcast "signin-submission", data
-		return
+	for event in events
+		$scope.$on event, (ev, data) ->
+			# PREVENT INFINITE LOOP ON BROADCAST
+			return	if ev.targetScope is $scope
+			console.log "MainController on event", ev.name
+			$scope.$broadcast ev.name, data
+			return
 
 	$scope.$on "login", (ev, data) ->
 		console.info data.user, 'is logged-in.'

@@ -157,7 +157,7 @@ uki.signin = function(lookup, req, res, onSuccess, onFail) {
 			req.session.userId = user.id;
 			
 			// if the user has a password set, store a persistence cookie to resume sessions
-			if (keystone.get('cookie signin') && user.password) {
+			if (false && keystone.get('cookie signin') && user.password) {
 				var userToken = user.id + ':' + keystone.session.hash(user.password);
 				res.cookie('keystone.uid', userToken, { signed: true, httpOnly: true });
 			}

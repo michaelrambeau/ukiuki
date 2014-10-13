@@ -2,14 +2,13 @@
 	<div class="mypage-header">
 		<div class="container-fluid">
 
-		<h2>{{currentUser.username}}</h2>
-
+		<h2>{{user.username}}</h2>
 
 		<tabs class="mypage-tabs">
-			<tab state="mypage.home">HOME</tab>
+			<tab state="user.home" user="user">HOME</tab>
 			<!--<tab state="mypage.about">ABOUT</tab>-->
-			<tab state="mypage.blog">BLOG</tab>
-			<tab state="mypage.galleries">GALLERY</tab>
+			<tab state="user.blog" user="user">BLOG</tab>
+			<tab state="user.galleries" user="user">GALLERY</tab>
 			<!--<tab state="mypage.collection">COLLECTION</tab>-->
 		</tabs>
 
@@ -17,4 +16,4 @@
 </div>
 
 
-	<ui-view></ui-view>
+<ui-view></ui-view>

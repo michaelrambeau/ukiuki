@@ -1,4 +1,4 @@
-app.controller "SignupController", ($scope, $http) ->
+app.controller "SignupController", ($scope, $http, $state) ->
 	console.log "Signup controller"
 	$scope.status = ""
 	$scope.submit = ->
@@ -17,6 +17,8 @@ app.controller "SignupController", ($scope, $http) ->
 		$http.post("/api/signup", formData).success((data) ->
 			$scope.status = "SUCCESS"
 			console.log data
+			#Emit an event to the main scope to trigger navigation
+			$scope.$emit 'login', data
 			return
 		).error (data) ->
 			$scope.status = "ERROR"
@@ -51,14 +53,18 @@ app.controller "SigninController", ($scope, $http) ->
 			email: $scope.email #can be either an email address or a username
 			password: $scope.password
 
-		
-		#Update the global scope
-		$http.post("/api/signin", formData).success((data) ->
+		q = $http
+			url: "/api/signin"
+			method: "POST"
+			data: formData
+			showLoading: true
+		q.success (data) ->
 			$scope.status = "SUCCESS"
 			console.log data
+			#Emit an event to the main scope to trigger navigation
 			$scope.$emit 'login', data
 			return
-		).error (data) ->
+		q.error (data) ->
 			$scope.status = "ERROR"
 			return
 

@@ -39,6 +39,30 @@ app.config ($stateProvider, $urlRouterProvider) ->
 			deepStateRedirect: true				
 			sticky: true
 
+
+		"user":
+			url: "/user/:username"
+			views:
+				mypage:
+					templateUrl: "html/user/index.html"
+					controller: 'UserController'
+			deepStateRedirect: false
+			sticky: false
+		"user.galleries":
+			url: "/galleries"
+			templateUrl: "html/user/user-galleries.html"
+			#controller: 'MyGalleriesController'
+		"user.home":
+			url: "/home"
+			templateUrl: "html/user/home.html"
+		"user.blog":
+			url: "/blog"
+			templateUrl: "html/user/blog.html"
+		"user.galleries.upload":
+			url: "/upload"
+			templateUrl: "html/user/upload-gallery.html"
+			controller: 'MyPageController'
+
 		"mypage":
 			url: "/mypage"
 			views:
@@ -59,7 +83,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
 		"mypage.galleries.upload":
 			url: "/upload"
 			templateUrl: "html/mypage/upload-gallery.html"
-			controller: 'MyPageController'
+			controller: 'GalleryUploadController'
 
 	for key,options of states
 		$stateProvider.state key, options

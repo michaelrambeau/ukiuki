@@ -5,7 +5,7 @@ var async = require('async'),
 
 
 //request launched by the main controller to get data about the current user.
-module.exports.getUserData = function(req, res) {
+module.exports.getCurrentUserData = function(req, res) {
 	var user = null;
 	if (req.user) {
 		user = _.clone(req.user.toObject());

@@ -23,26 +23,26 @@ $(document).ready ->
 		$loginBlock.collapse "hide"
 		return
 
-app.controller "MainController", ($scope, $http, $state) ->
+app.controller "MainController", ($scope, $http, $state, User) ->
 	console.log "Main controller"
-	$scope.user = null
+	$scope.currentUser = null
 
 	$scope.getUserData = ->
 		$http.get("/api/user-data").success (data) ->
 			console.info "Connected user", data.user
 			if data.user?
-				$scope.user = data.user
+				$scope.currentUser = data.user
 				$scope.$broadcast 'authenticated'
 
 	#get data about the current user
 	$scope.getUserData()
 
 	$scope.isLoggedin = ->
-		$scope.user?
+		$scope.currentUser?
 
 	$scope.signout = ->
 		$http.post("/api/signout").success((data) ->
-			$scope.user = null
+			$scope.currentUser = null
 			console.log "Disconnected."
 			$state.go("browse")
 			return
@@ -69,6 +69,9 @@ app.controller "MainController", ($scope, $http, $state) ->
 
 	$scope.$on "login", (ev, data) ->
 		console.info data.user, 'is logged-in.'
-		$scope.user = data.user
+		$scope.currentUser = data.user
 		$loginBlock.collapse "hide"
 		$state.go 'mypage.galleries'
+
+	User.getFeatured (users) ->
+		$scope.featuredUsers = users

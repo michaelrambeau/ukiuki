@@ -7,7 +7,7 @@
 
 		<form class="form-upload" name="uploadForm" ng-submit="isFormValid() && save()">
 			<div class="form-group">
-				<input ng-model="title" focus type="text" class="form-control" required placeholder="Enter the title" />
+				<input ng-model="title" type="text" class="form-control" required placeholder="Enter the title" />
 			</div>
 			<div class="form-group">
 				<select ng-model="category" class="form-control" required>
@@ -27,12 +27,11 @@
 				<div class="status" ng-switch="status">
 					<div class="alert alert-info" ng-switch-when="1">Uploading...</div>
 					<div class="alert alert-success" ng-switch-when="2">The picture has been uploaded.</div>
-					<div class="alert alert-danger" ng-switch-when="3">Sorry, an unexpected error occurred: {{error}}.</div>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<p>
+				<p class="text-center">
 					<a href="" ui-sref="mypage.galleries" class="btn btn-default">
 						<i class="fa fa-times"></i>
 						CANCEL

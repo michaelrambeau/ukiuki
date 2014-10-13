@@ -3,7 +3,7 @@ extends ../layouts/ukiuki
 block content
 	div(ui-view="browse", ng-show="$state.includes('browse')")
 	div(ui-view="whatisukiuki", ng-show="$state.includes('whatisukiuki')")
-	div(ui-view="mypage", ng-show="$state.includes('mypage')")
+	div(ui-view="mypage", ng-show="$state.includes('mypage') || $state.includes('user')")
 	
 	#browse-items-block(style="display:none;")
 

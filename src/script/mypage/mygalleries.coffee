@@ -4,7 +4,7 @@ app.controller 'MyGalleriesController', ($scope, $http) ->
 
 	$scope.getGalleries = ->
 		console.log "Loading user's galleries..."
-		$http.get("api/user-galleries/" + $scope.user._id).success (data) ->
+		$http.get("api/user-galleries/" + $scope.currentUser._id).success (data) ->
 			$scope.galleries = data.galleries
 			console.info $scope.galleries.length, "User galleries loaded"
 
@@ -19,4 +19,4 @@ app.controller 'MyGalleriesController', ($scope, $http) ->
 
 	#when the controller is called for the 1st time, load user's galleries
 	#if the user is defined (that is to say if the user comess from the login form)
-	if $scope.user then $scope.getGalleries()
+	if $scope.isLoggedin() then $scope.getGalleries()

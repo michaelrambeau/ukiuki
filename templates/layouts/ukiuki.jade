@@ -37,7 +37,7 @@ html(ng-app="app",ng-controller="MainController")
 								a.link.collapsed(href="#login-block", data-toggle="collapse", data-parent="header") Login | Register
 						div(ng-show="isLoggedin()")
 							span.member
-								a(ui-sref="mypage.galleries") {{user.username}}
+								a(ui-sref="mypage.galleries") {{currentUser.username}}
 								| &nbsp;
 							span
 								a.link(href="", ng-click="signout()") SIGN OUT
@@ -53,7 +53,7 @@ html(ng-app="app",ng-controller="MainController")
 							//.column
 							.col-md-6
 								form(name="signinForm", novalidate, ng-controller="SigninController", ng-submit="submit()", ng-class="{submitted: submitted}")
-									h2 Login {{status}}
+									h2 Login
 									p Existing members please enter your details below to login.
 									div.field
 										input(ng-model="email", type="text", required, ng-minlength="4", placeholder="Username")
@@ -106,7 +106,7 @@ html(ng-app="app",ng-controller="MainController")
 							| Facebook
 						button.ui.button.labeled.icon.google.plus.mini
 							//i.icon.google.plus
-							i.icon.fa.fa-google
+							i.icon.fa.fa-google-plus
 							| Google
 							
 
@@ -122,7 +122,7 @@ html(ng-app="app",ng-controller="MainController")
 		block content
 		
 		footer
-			div.container-fluid
+			div.container
 				div.row
 					div.col.col-md-4
 						h2 About us
@@ -145,6 +145,9 @@ html(ng-app="app",ng-controller="MainController")
 							
 					div.col.col-md-4
 						h2 Recommended artists
+						a.avatar(href="",ui-sref="user.galleries({username: u.username})", ng-repeat="u in featuredUsers")
+							//span {{u.username}}
+							img(src="/images/avatar-default-small.png", width="50",height="50", alt="avatar")
 						
 		script(src='/js/lib/jquery/jquery-1.11.1.min.js')
 		script(src='/js/lib/bootstrap/bootstrap-3.2.0.min.js')

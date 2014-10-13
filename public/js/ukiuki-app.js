@@ -33,6 +33,34 @@
         deepStateRedirect: true,
         sticky: true
       },
+      "user": {
+        url: "/user/:username",
+        views: {
+          mypage: {
+            templateUrl: "html/user/index.html",
+            controller: 'UserController'
+          }
+        },
+        deepStateRedirect: false,
+        sticky: false
+      },
+      "user.galleries": {
+        url: "/galleries",
+        templateUrl: "html/user/user-galleries.html"
+      },
+      "user.home": {
+        url: "/home",
+        templateUrl: "html/user/home.html"
+      },
+      "user.blog": {
+        url: "/blog",
+        templateUrl: "html/user/blog.html"
+      },
+      "user.galleries.upload": {
+        url: "/upload",
+        templateUrl: "html/user/upload-gallery.html",
+        controller: 'MyPageController'
+      },
       "mypage": {
         url: "/mypage",
         views: {
@@ -59,7 +87,7 @@
       "mypage.galleries.upload": {
         url: "/upload",
         templateUrl: "html/mypage/upload-gallery.html",
-        controller: 'MyPageController'
+        controller: 'GalleryUploadController'
       }
     };
     _results = [];
@@ -68,6 +96,18 @@
       _results.push($stateProvider.state(key, options));
     }
     return _results;
+  });
+
+}).call(this);
+
+(function() {
+  app.directive('focus', function() {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        return element[0].focus();
+      }
+    };
   });
 
 }).call(this);
@@ -100,10 +140,19 @@
   app.directive('tabs', function() {
     return {
       restrict: 'E',
-      scope: {},
+      scope: {
+        user: '='
+      },
       transclude: true,
       template: '<div ng-transclude></div>',
-      replace: true
+      replace: true,
+      controller: function($scope) {
+        console.info("tabs ctrl", $scope.user);
+        return this.user = $scope.user;
+      },
+      link: function(scope, element, attrs, tabsCtrl) {
+        return console.info("user fom link=", scope.user);
+      }
     };
   });
 
@@ -114,7 +163,8 @@
       transclude: true,
       replace: true,
       scope: {
-        state: '@'
+        state: '@',
+        user: '='
       },
       template: '<a href="" ui-sref="{{state}}" ng-class="{selected: currentState.includes(state)}" ng-transclude></a>',
       controller: function($scope, $rootScope) {
@@ -122,6 +172,9 @@
           console.log($rootScope.$state.current.name);
           return $scope.currentState = $rootScope.$state;
         });
+      },
+      link: function(scope, element, attrs, tabsCtrl) {
+        return console.info("user=", tabsCtrl.user);
       }
     };
   });
@@ -214,30 +267,43 @@
 
 (function() {
   app.config(function($httpProvider) {
-    var spinnerFunction;
-    $httpProvider.responseInterceptors.push('myHttpInterceptor');
-    spinnerFunction = function(data, headersGetter) {
-      $("#spinner").addClass('active');
-      return data;
-    };
-    return $httpProvider.defaults.transformRequest.push(spinnerFunction);
+    $httpProvider.interceptors.push('myHttpInterceptor');
+    return true;
   });
 
-  app.factory("myHttpInterceptor", function($q, $window) {
-    var api, cb1, cb2, hideLoading;
+  app.factory('myHttpInterceptor', function($q) {
+    var api, hideLoading, n, showLoading;
+    n = 0;
     hideLoading = function() {
-      return $("#spinner").removeClass('active');
+      n--;
+      if (n > 0) {
+        return console.log("A previous request is still pending...");
+      } else {
+        return $("#spinner").removeClass('active');
+      }
     };
-    cb1 = function(response) {
-      hideLoading();
-      return response;
+    showLoading = function() {
+      n++;
+      return $("#spinner").addClass('active');
     };
-    cb2 = function(response) {
-      hideLoading();
-      return $q.reject(response);
-    };
-    api = function(promise) {
-      return promise.then(cb1, cb2);
+    api = {
+      request: function(config) {
+        if (config.showLoading !== false) {
+          showLoading();
+        }
+        return config;
+      },
+      requestError: function(rejection) {
+        return $q.reject(rejection);
+      },
+      response: function(response) {
+        hideLoading();
+        return response;
+      },
+      responseError: function(rejection) {
+        hideLoading();
+        return $q.reject(rejection);
+      }
     };
     return api;
   });
@@ -245,7 +311,7 @@
 }).call(this);
 
 (function() {
-  app.controller("SignupController", function($scope, $http) {
+  app.controller("SignupController", function($scope, $http, $state) {
     console.log("Signup controller");
     $scope.status = "";
     $scope.submit = function() {
@@ -264,6 +330,7 @@
       $http.post("/api/signup", formData).success(function(data) {
         $scope.status = "SUCCESS";
         console.log(data);
+        $scope.$emit('login', data);
       }).error(function(data) {
         $scope.status = "ERROR";
         $scope.error = data.error.key;
@@ -284,17 +351,24 @@
       $scope.signinForm.$valid && $scope.signin();
     };
     $scope.signin = function() {
-      var formData;
+      var formData, q;
       $scope.status = "LOADING";
       formData = {
         email: $scope.email,
         password: $scope.password
       };
-      $http.post("/api/signin", formData).success(function(data) {
+      q = $http({
+        url: "/api/signin",
+        method: "POST",
+        data: formData,
+        showLoading: true
+      });
+      q.success(function(data) {
         $scope.status = "SUCCESS";
         console.log(data);
         $scope.$emit('login', data);
-      }).error(function(data) {
+      });
+      q.error(function(data) {
         $scope.status = "ERROR";
       });
     };
@@ -334,26 +408,26 @@
     });
   });
 
-  app.controller("MainController", function($scope, $http, $state) {
+  app.controller("MainController", function($scope, $http, $state, User) {
     var event, events, _i, _len;
     console.log("Main controller");
-    $scope.user = null;
+    $scope.currentUser = null;
     $scope.getUserData = function() {
       return $http.get("/api/user-data").success(function(data) {
         console.info("Connected user", data.user);
         if (data.user != null) {
-          $scope.user = data.user;
+          $scope.currentUser = data.user;
           return $scope.$broadcast('authenticated');
         }
       });
     };
     $scope.getUserData();
     $scope.isLoggedin = function() {
-      return $scope.user != null;
+      return $scope.currentUser != null;
     };
     $scope.signout = function() {
       $http.post("/api/signout").success(function(data) {
-        $scope.user = null;
+        $scope.currentUser = null;
         console.log("Disconnected.");
         $state.go("browse");
       }).error(function(data) {
@@ -371,11 +445,14 @@
         $scope.$broadcast(ev.name, data);
       });
     }
-    return $scope.$on("login", function(ev, data) {
+    $scope.$on("login", function(ev, data) {
       console.info(data.user, 'is logged-in.');
-      $scope.user = data.user;
+      $scope.currentUser = data.user;
       $loginBlock.collapse("hide");
       return $state.go('mypage.galleries');
+    });
+    return User.getFeatured(function(users) {
+      return $scope.featuredUsers = users;
     });
   });
 
@@ -391,7 +468,7 @@
     console.log("MyGalleries controller");
     $scope.getGalleries = function() {
       console.log("Loading user's galleries...");
-      return $http.get("api/user-galleries/" + $scope.user._id).success(function(data) {
+      return $http.get("api/user-galleries/" + $scope.currentUser._id).success(function(data) {
         $scope.galleries = data.galleries;
         return console.info($scope.galleries.length, "User galleries loaded");
       });
@@ -402,7 +479,7 @@
     $scope.$on('upload', function() {
       return $scope.getGalleries();
     });
-    if ($scope.user) {
+    if ($scope.isLoggedin()) {
       return $scope.getGalleries();
     }
   });
@@ -410,17 +487,14 @@
 }).call(this);
 
 (function() {
-  app.controller("MyPageController", function($scope, $upload, $http, $state, Categories) {
-    var config, options;
-    console.log("MyPageController", $scope.user);
+  app.controller("GalleryUploadController", function($scope, $upload, $http, $state, Categories) {
+    var config;
+    console.log("GalleryUploadController", $scope.currentUser);
+    $scope.status = 0;
+    $scope.progress = 0;
     config = {
       cloud_name: 'ukiukidev',
       upload_preset: 'se4iauwt'
-    };
-    options = {
-      title: 'Test mike ' + new Date(),
-      status: 0,
-      progress: 0
     };
     Categories.getAll(function(data) {
       return $scope.categories = data;
@@ -428,15 +502,17 @@
     $.cloudinary.config('cloud_name', config.cloud_name);
     $.cloudinary.config('upload_preset', config.upload_preset);
     $scope.onFileSelect = function($files) {
-      var file, _i, _len, _results;
+      var file, tags, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = $files.length; _i < _len; _i++) {
         file = $files[_i];
+        tags = [$scope.currentUser.username, $scope.category, 'NEW'];
         $scope.upload = $upload.upload({
+          showLoading: false,
           url: 'https://api.cloudinary.com/v1_1/' + config.cloud_name + '/upload',
           data: {
             upload_preset: config.upload_preset,
-            tags: $scope.user.username + "," + $scope.category
+            tags: tags.join(',')
           },
           file: file
         });
@@ -448,8 +524,13 @@
           return console.log('percent: ' + p);
         });
         _results.push($scope.upload.success(function(data, status, headers, config) {
-          $scope.status = 2;
-          return $scope.gallery = data;
+          if (data.error) {
+            $scope.status = 3;
+            return $scope.error = data.error;
+          } else {
+            $scope.status = 2;
+            return $scope.gallery = data;
+          }
         }));
       }
       return _results;
@@ -496,6 +577,33 @@
       }
     };
     return api;
+  });
+
+}).call(this);
+
+(function() {
+  app.factory("User", function($http) {
+    var api;
+    api = {
+      getFeatured: function(cb) {
+        return $http.get("api/user/featured").success(function(data) {
+          return cb(data.users);
+        });
+      }
+    };
+    return api;
+  });
+
+}).call(this);
+
+(function() {
+  app.controller('UserController', function($scope, $http, $stateParams) {
+    var username;
+    username = $stateParams.username;
+    return $http.get('/api/user-data/' + username).success(function(data) {
+      $scope.galleries = data.galleries;
+      return $scope.user = data.user;
+    });
   });
 
 }).call(this);

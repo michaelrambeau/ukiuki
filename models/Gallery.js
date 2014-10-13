@@ -84,6 +84,6 @@ Gallery.schema.pre('remove', function(next) {
 });
 
 
-Gallery.defaultColumns = 'title, category, author|20%, publishedDate|20%';
+Gallery.defaultColumns = 'title, featured, category, author|20%, publishedDate|20%';
 
 Gallery.register();

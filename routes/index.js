@@ -55,6 +55,9 @@ exports = module.exports = function(app) {
 	app.all('/api/stats', routes.api.stats);
 	app.all('/api/categories', routes.api.category.get);
 	
+	//Featured users
+	app.get('/api/user/featured', routes.api.user.featured);
+
 	//Signup
 	app.post('/api/signup', routes.api.session.signup);
 	//Sign in
@@ -62,7 +65,8 @@ exports = module.exports = function(app) {
 	app.post('/api/signout', routes.api.session.signout);
 	
 	//data about the current user (used by the MainController)
-	app.get('/api/user-data', routes.api.session.getUserData);
+	app.get('/api/user-data', routes.api.session.getCurrentUserData);
+	app.get('/api/user-data/:username', routes.api.user.getUserData);
 
 	app.post('/api/upload-gallery', routes.api.gallery.uploadGallery);
 

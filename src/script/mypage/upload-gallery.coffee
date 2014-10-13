@@ -1,17 +1,19 @@
-app.controller "MyPageController", ($scope, $upload, $http, $state, Categories) ->
-	console.log "MyPageController", $scope.user
+app.controller "GalleryUploadController", ($scope, $upload, $http, $state, Categories) ->
+	console.log "GalleryUploadController", $scope.currentUser
+
+	#upload status:
+	# - 0 = initial status (before a picture is selected)
+	# - 1 = upload in progress
+	# - 2 = upload complete
+	$scope.status = 0
+
+	#upload percentage
+	$scope.progress = 0
+
 	config =
 		cloud_name: 'ukiukidev'
 		upload_preset: 'se4iauwt'
-	options =
-		title:  'Test mike ' + new Date()
 
-		#upload status: 0, 1 or 2
-		status:  0
-
-		progress: 0
-
-	#$scope[key] = value for key, value of options
 
 	Categories.getAll (data) ->
 		$scope.categories = data
@@ -21,11 +23,17 @@ app.controller "MyPageController", ($scope, $upload, $http, $state, Categories) 
 
 	$scope.onFileSelect = ($files) ->
 		for file in $files
+			tags = [
+				$scope.currentUser.username
+				$scope.category
+				'NEW'
+			]
 			$scope.upload = $upload.upload
+				showLoading: false
 				url: 'https://api.cloudinary.com/v1_1/' + config.cloud_name + '/upload'
 				data:
 					upload_preset: config.upload_preset
-					tags: $scope.user.username + "," + $scope.category
+					tags: tags.join(',')
 				file: file
 
 			$scope.upload.progress (evt) ->
@@ -35,8 +43,12 @@ app.controller "MyPageController", ($scope, $upload, $http, $state, Categories) 
 				console.log('percent: ' + p)
 
 			$scope.upload.success (data, status, headers, config) ->
-				$scope.status = 2
-				$scope.gallery = data
+				if data.error
+					$scope.status = 3
+					$scope.error = data.error
+				else
+					$scope.status = 2
+					$scope.gallery = data
 
 	$scope.isFormValid = ->
 		if $scope.uploadForm.$valid and $scope.status is 2 then true else false

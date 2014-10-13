@@ -15,13 +15,22 @@ User.add({
 	email: { type: Types.Email, initial: true, required: true, index: true },
 	password: { type: Types.Password, initial: true, required: true }
 }, 'Permissions', {
-	isAdmin: { type: Boolean, label: 'Can access Keystone', index: true }
+	isAdmin: { type: Boolean, label: 'Can access Keystone', index: true },
+	featured: {type: Boolean}
 });
 
 // Provide access to Keystone
 User.schema.virtual('canAccessKeystone').get(function() {
 	return this.isAdmin;
 });
+
+User.schema.methods.getGalleries = function(cb) {
+	var Gallery = keystone.list("Gallery");
+	Gallery.model.find({author: this._id})
+		.exec(function(err, records) {
+			cb(err, records)
+		});
+};
 
 
 /**
@@ -36,5 +45,5 @@ User.relationship({ ref: 'Gallery', path: 'author' });
  * Registration
  */
 
-User.defaultColumns = 'username, email, isAdmin';
+User.defaultColumns = 'username, email, isAdmin, featured';
 User.register();

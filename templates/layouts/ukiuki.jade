@@ -19,18 +19,17 @@ html(ng-app="app",ng-controller="MainController")
 		header
 			.container-fluid
 				.table-layout
+					//col #1
 					div
 						a(href, ui-sref="browse")
 							img.logo(src="/images/logos/u-art.png",alt="UKiUki Art",width="163",height="66")
+
+					//col #2
 					div.visible-lg
 						span.motto(ng-hide="isLoggedin()") The most unique, creative space for artists
-						//span.motto(ng-show="isLoggedin()")
-							a(ui-sref="mypage.galleries") My UKiUKI
-					div.right-column
-						span.icons.pull-right.hidden-mobile
-							img(src="/images/logos/icon-facebook.png", alt="Facebook", width="25")
-							img(src="/images/logos/icon-twitter.png", alt="Twitter", width="25")
-							img(src="/images/logos/icon-search.png", alt="Search", width="25")
+
+					//col #3
+					div.login-column
 						div(ng-hide="isLoggedin()")
 							span.member.hidden-xs.hidden-sm.hidden-md Are you a member? 
 							span
@@ -41,6 +40,19 @@ html(ng-app="app",ng-controller="MainController")
 								| &nbsp;
 							span
 								a.link(href="", ng-click="signout()") SIGN OUT
+
+					//col #4
+					div.social-column
+						span.icons.hidden-mobile
+							a.icon(href)
+								i.fa.fa-facebook
+							a.icon(href)
+								i.fa.fa-twitter
+							a.icon(href)
+								i.fa.fa-search
+							//img.icon(src="/images/logos/icon-facebook.png", alt="Facebook", width="25")
+							//img.icon(src="/images/logos/icon-twitter.png", alt="Twitter", width="25")
+							//img.icon(src="/images/logos/icon-search.png", alt="Search", width="25")
 				
 			div#login-block.collapse.panel-collapse.dark-form
 				div.inner
@@ -111,13 +123,7 @@ html(ng-app="app",ng-controller="MainController")
 							
 
 
-			div.uki-navbar
-				.container-fluid
-					button.btn.navbar-toggle(data-toggleXX="offcanvas",style="display:block;",ng-show="$state.includes('browse')")
-						div.bars
-							- for(var i=0; i<3; i++)
-								span.icon-bar
-						div.text Filter by category	
+
 	
 		block content
 		

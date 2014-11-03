@@ -1,4 +1,5 @@
 window.app = angular.module("app", [
+	"resource"
 	"ui.router"
 	"ct.ui.router.extras"
 	"angularFileUpload"
@@ -9,7 +10,7 @@ app.run [
 	"$state"
 	"$stateParams"
 	($rootScope, $state, $stateParams) ->
-		
+
 		# It's very handy to add references to $state and $stateParams to the $rootScope
 		# so that you can access them from any scope within your applications.For example,
 		# <li ui-sref-active="active }"> will set the <li> // to active whenever
@@ -18,17 +19,17 @@ app.run [
 		$rootScope.$stateParams = $stateParams
 ]
 app.config ($stateProvider, $urlRouterProvider) ->
-	
+
 	# For any unmatched url, redirect to /state1
 	$urlRouterProvider.otherwise "/browse"
-	
+
 	states =
 		"browse":
 			url: "/browse"
 			views:
 				browse:
 					template: $("#browse-items-block").html()
-					controller: "BrowseController"					
+					controller: "BrowseController"
 			deepStateRedirect: true
 			sticky: true
 		"whatisukiuki":
@@ -36,7 +37,7 @@ app.config ($stateProvider, $urlRouterProvider) ->
 			views:
 				whatisukiuki:
 					templateUrl: "html/whatisukiuki.html"
-			deepStateRedirect: true				
+			deepStateRedirect: true
 			sticky: true
 
 

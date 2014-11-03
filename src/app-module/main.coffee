@@ -23,12 +23,12 @@ $(document).ready ->
 		$loginBlock.collapse "hide"
 		return
 
-app.controller "MainController", ($scope, $http, $state, User) ->
+app.controller "MainController", ($scope, $state, ResourceUser, $http) ->
 	console.log "Main controller"
 	$scope.currentUser = null
 
 	$scope.getUserData = ->
-		$http.get("/api/user-data").success (data) ->
+		ResourceUser.getCurrentUserData (data) ->
 			console.info "Connected user", data.user
 			if data.user?
 				$scope.currentUser = data.user
@@ -73,5 +73,5 @@ app.controller "MainController", ($scope, $http, $state, User) ->
 		$loginBlock.collapse "hide"
 		$state.go 'mypage.galleries'
 
-	User.getFeatured (users) ->
-		$scope.featuredUsers = users
+	ResourceUser.getFeatured (data) ->
+		$scope.featuredUsers = data.users

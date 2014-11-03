@@ -38,7 +38,7 @@ app.controller "SigninController", ($scope, $http) ->
 	$scope.status = ""
 	$scope.submitted = false
 	$scope.submit = ->
-		
+
 		#submit event
 		$scope.submitted = true
 		$scope.$emit "signin-submission"
@@ -46,7 +46,7 @@ app.controller "SigninController", ($scope, $http) ->
 		return
 
 	$scope.signin = ->
-		
+
 		#triggered when the form is valid
 		$scope.status = "LOADING"
 		formData =

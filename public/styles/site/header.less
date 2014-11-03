@@ -5,15 +5,25 @@ header{
 	.logo{
 		margin: 5px 0;
 	}
-	.right-column{
+	.login-column{
 		text-align: right;
+	}
+	.social-column{
+		text-align: right;
+		vertical-align: middle;
 		@media(min-width: @screen-lg-min){
-			width: 420px;
+			width: 150px;
 		}
 	}
 	.icons{
-		img{
-			margin-left:20px;
+		margin-right: 10px;
+		font-size: 32px;
+		.icon{
+			color: #666666;
+			margin-left:15px;
+			&:hover{
+				color: @uki-purple;
+			}
 		}	
 	}
 	.motto{
@@ -31,35 +41,63 @@ header{
 			//text-decoration: none;
 		}
 	}
-	.navbar-toggle{
-		margin: 5px 0;
-		padding: 0;
-		color: #999999;
-		background-color: transparent;
-		font-size: 14px;
-		float: none;
-		&:hover, &:focus{
-			background-color: transparent;
-			color: @uki-light-purple;
-			.icon-bar{
-				background-color: @uki-light-purple;
-			}
-		}
-		.icon-bar{
-			background-color: #999999;
-			
-		}
-		.bars{
-			float: left;
-			padding-top: 3px;//to align bars with text
-		}
-		.text{
-			padding-left: 30px;//to add space between the bars and the text "Filter by category"
-		}	
-	}	
 }	
 .uki-navbar{
-	height:36px;
+	//height:36px;
 	padding: 3px;
 	background-color: #333333;
+	input{
+		margin-top: 0;
+		margin-left: 20px;
+		padding: 2px 10px;
+		width: 200px;
+		background-color: #696969;
+		color: #ccc;
+		border: 1px solid transparent;
+	}
+}
+
+.filter-bar-toggle{
+	margin: 5px 0;
+	padding: 0;
+	color: #999999;
+	background-color: transparent;
+	font-size: 14px;
+	float: none;
+	&:hover, &:focus{
+		background-color: transparent;
+		color: @uki-light-purple;
+		.icon-bar{
+			background-color: @uki-light-purple;
+		}
+	}
+	.icon-bar{
+		background-color: #999999;
+		display: block;
+		width: 22px;
+		height: 2px;
+		border-radius: 1px;
+	}
+	.icon-bar+.icon-bar {
+		margin-top: 4px;
+	}
+	.bars{
+		float: left;
+		padding-top: 3px;//to align bars with text
+	}
+	.text{
+		padding-left: 30px;//to add space between the bars and the text "Filter by category"
+	}
+}
+.search-box{
+	position: relative;
+	.cross-icon{
+		position: absolute;
+		right: 2px;
+		font-size: 30px;
+		line-height: 30px;
+		//font-weight: bold;
+		color: #999999;
+		cursor: pointer;
+	}
 }

@@ -8,6 +8,8 @@
 }
 
 .gallery-text-block {
+	margin-bottom: @grid-gutter-width;
+	background-color: #444444;
 	position: relative;
 	color: #858585;
 	font-size: 18px;
@@ -36,7 +38,8 @@
 
 .gallery-block{
 	background-color: #cbcbcb;
-	#gradient > .radial(#dadada, #575656);
+	//#gradient > .radial(#dadada; #959595);
+	.lh-background-image(radial-gradient(center, #dadada 20%,#8e8e8e 100%));
 	padding: @grid-gutter-width 0 0;
 }
 
@@ -67,4 +70,11 @@
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
+}
+
+
+.load-more{
+	margin-bottom: 20px;
+	background-color: #444444;
+	padding: 20px;
 }

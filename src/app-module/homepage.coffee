@@ -4,12 +4,8 @@ adjustHeightOLD = ->
 	return
 
 
-app.controller "BrowseController", ($scope, $http) ->
-	
-	#adjustHeight();
-	
-	#return true;
-	
+app.controller "BrowseController", ($scope, ResourceGallery) ->
+
 	#Example of URL "http://res.cloudinary.com/michaelrambeau/image/upload/v1406960129/bfwg81wgizopp1wumizj.jpg"
 	#use a "named transformation" that creates the thumbnail (300px wide)
 	findCategory = (code) ->
@@ -30,18 +26,9 @@ app.controller "BrowseController", ($scope, $http) ->
 	$scope.loading = true
 	$sidebar = $(".ui.sidebar:visible")
 	$sidebar.sidebar debug: true
-	$(".navbar-toggle").click ->
+	$(".filter-bar-toggle").click ->
 		$sidebar.sidebar "toggle"
 		return
-
-	if true
-		$http.get("api/featured-items").success (data) ->
-			$scope.galleries = data.galleries
-			$scope.categories = data.categories
-			$scope.loading = false
-			console.info $scope.galleries.length, "items loaded"
-			getStatsByCategory()
-			return
 
 	$scope.searchFilter = (item) ->
 		titleFilter = new RegExp($scope.search.text, "i").test(item.title)
@@ -60,7 +47,7 @@ app.controller "BrowseController", ($scope, $http) ->
 		text: ""
 
 	getStatsByCategory = ->
-		$http.get("api/stats").success (data) ->
+		ResourceGallery.getStatsByCategory (data) ->
 			data.categories.forEach (cat) ->
 				found = findCategory(cat._id)
 				found.total = cat.total	if found
@@ -73,5 +60,15 @@ app.controller "BrowseController", ($scope, $http) ->
 	$scope.setCategory = (id) ->
 		$scope.search.category = id
 		return
+
+
+	ResourceGallery.getFeatured (data) ->
+		$scope.galleries = data.galleries
+		$scope.categories = data.categories
+		console.info $scope.galleries.length, "items loaded"
+		getStatsByCategory()
+		$scope.loading = false
+		return
+
 
 	return

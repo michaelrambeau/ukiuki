@@ -1,5 +1,5 @@
 (function() {
-  window.app = angular.module("app", ["ui.router", "ct.ui.router.extras", "angularFileUpload", "cloudinary"]);
+  window.app = angular.module("app", ["resource", "ui.router", "ct.ui.router.extras", "angularFileUpload", "cloudinary"]);
 
   app.run([
     "$rootScope", "$state", "$stateParams", function($rootScope, $state, $stateParams) {
@@ -190,7 +190,7 @@
     $(".gallery.info").height(h);
   };
 
-  app.controller("BrowseController", function($scope, $http) {
+  app.controller("BrowseController", function($scope, ResourceGallery) {
     var $sidebar, findCategory, getStatsByCategory, i;
     findCategory = function(code) {
       var found;
@@ -217,18 +217,9 @@
     $sidebar.sidebar({
       debug: true
     });
-    $(".navbar-toggle").click(function() {
+    $(".filter-bar-toggle").click(function() {
       $sidebar.sidebar("toggle");
     });
-    if (true) {
-      $http.get("api/featured-items").success(function(data) {
-        $scope.galleries = data.galleries;
-        $scope.categories = data.categories;
-        $scope.loading = false;
-        console.info($scope.galleries.length, "items loaded");
-        getStatsByCategory();
-      });
-    }
     $scope.searchFilter = function(item) {
       var categoryFilter, descriptionFilter, titleFilter;
       titleFilter = new RegExp($scope.search.text, "i").test(item.title);
@@ -248,7 +239,7 @@
       text: ""
     };
     getStatsByCategory = function() {
-      $http.get("api/stats").success(function(data) {
+      ResourceGallery.getStatsByCategory(function(data) {
         data.categories.forEach(function(cat) {
           var found;
           found = findCategory(cat._id);
@@ -261,6 +252,13 @@
     $scope.setCategory = function(id) {
       $scope.search.category = id;
     };
+    ResourceGallery.getFeatured(function(data) {
+      $scope.galleries = data.galleries;
+      $scope.categories = data.categories;
+      console.info($scope.galleries.length, "items loaded");
+      getStatsByCategory();
+      $scope.loading = false;
+    });
   });
 
 }).call(this);
@@ -408,12 +406,12 @@
     });
   });
 
-  app.controller("MainController", function($scope, $http, $state, User) {
+  app.controller("MainController", function($scope, $state, ResourceUser, $http) {
     var event, events, _i, _len;
     console.log("Main controller");
     $scope.currentUser = null;
     $scope.getUserData = function() {
-      return $http.get("/api/user-data").success(function(data) {
+      return ResourceUser.getCurrentUserData(function(data) {
         console.info("Connected user", data.user);
         if (data.user != null) {
           $scope.currentUser = data.user;
@@ -451,8 +449,8 @@
       $loginBlock.collapse("hide");
       return $state.go('mypage.galleries');
     });
-    return User.getFeatured(function(users) {
-      return $scope.featuredUsers = users;
+    return ResourceUser.getFeatured(function(data) {
+      return $scope.featuredUsers = data.users;
     });
   });
 
@@ -582,11 +580,11 @@
 }).call(this);
 
 (function() {
-  app.factory("User", function($http) {
+  app.factory("User", function(ResourceUser) {
     var api;
     api = {
       getFeatured: function(cb) {
-        return $http.get("api/user/featured").success(function(data) {
+        return ResourceUser.getFeatured(function(data) {
           return cb(data.users);
         });
       }

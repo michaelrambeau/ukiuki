@@ -73,7 +73,12 @@ module.exports = function(grunt) {
 		coffee:{
 			app: {
 				files: {
-					'public/js/ukiuki-app.js': ['src/script/**/*.coffee']
+					'public/js/ukiuki-app.js': ['src/app-module/**/*.coffee']
+				}
+			},
+			resource: {
+				files: {
+					'public/js/ukiuki-resource.js': ['src/resource-module/**/*.coffee']
 				}					
 			}	
 		},
@@ -107,7 +112,7 @@ module.exports = function(grunt) {
 				}
 			},
 			coffee: {
-				files: ['src/script/*.coffee'],
+				files: ['src/**/*.coffee'],
 				tasks: ['coffee']
 			}
 		}

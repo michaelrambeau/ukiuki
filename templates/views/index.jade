@@ -7,7 +7,18 @@ block content
 	
 	#browse-items-block(style="display:none;")
 
-		div#sidebar.ui.sidebar
+		.uki-navbar
+			.container-fluid
+				button.btn.filter-bar-toggle(data-toggleXX="offcanvas",ng-show="$state.includes('browse')")
+					div.bars
+						- for(var i=0; i<3; i++)
+							span.icon-bar
+					div.text.hidden-xs.hidden-sm Filter by category
+				span.search-box
+					input(ng-model="search.text",placeHolder="Enter text to search",autocomplete="off")
+					span.cross-icon(ng-click="search.text=''",ng-show="search.text != ''") ×
+
+		#sidebar.ui.sidebar
 			div.ui.menu.fluid.vertical.inverted
 				a.item(ng-click="setCategory('*')", ng-class="{active: search.category == '*'}")
 					| All
@@ -27,8 +38,8 @@ block content
 							p What is ukiuki?
 							a.btn.dark-button(ui-sref="whatisukiuki") Click here
 
-				gallery(data="gallery", ng-repeat="gallery in galleries | filter:searchFilter")
-					//div.place-holder.gallery(ng-if="loading")
+				gallery(data="gallery", ng-repeat="gallery in galleries | filter:searchFilter | limitTo:10")
+
 				div.col-sm-6.col-md-4.col-lg-3
 					.gallery-text-block
 						img.img-responsive(src="/images/gallery.gif")
@@ -37,8 +48,12 @@ block content
 								| UKiUKi allows you to 
 								strong customise 
 								| your site using your own banners, colours and wallpapers.
-								
-						
+
+			div.dark.text-center.load-more
+				button.btn.btn-lg.dark-button
+					i.fa.fa-plus
+					|  Click here to load more
+
 						
 		
 block js
@@ -56,7 +71,5 @@ block js
 	//script(src="/styles/semantic/less/modules/sidebar.js")
 	script(src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/javascript/semantic.min.js")
 
+	script(src="/js/ukiuki-resource.js")
 	script(src="/js/ukiuki-app.js")
-	//script(src="/js/ukiuki-top-page.js")
-	//script(src="//cdnjs.cloudflare.com/ajax/libs/holder/2.3.1/holder.js")
-	//script(src="/js/ukiuki.js")

@@ -182,14 +182,6 @@
 }).call(this);
 
 (function() {
-  var adjustHeightOLD;
-
-  adjustHeightOLD = function() {
-    var h;
-    h = $("img.gallery:first").height();
-    $(".gallery.info").height(h);
-  };
-
   app.controller("BrowseController", function($scope, ResourceGallery) {
     var $sidebar, findCategory, getStatsByCategory, i;
     findCategory = function(code) {
@@ -224,7 +216,7 @@
       var categoryFilter, descriptionFilter, titleFilter;
       titleFilter = new RegExp($scope.search.text, "i").test(item.title);
       descriptionFilter = RegExp($scope.search.text, "i").test(item.description);
-      categoryFilter = ($scope.search.category === "*") || (item.category === $scope.search.category);
+      categoryFilter = ($scope.search.categories.length === 0) || (findCategory(item.category).isSelected === true);
       return categoryFilter && (titleFilter || descriptionFilter);
     };
     $scope.formatDate = function(source) {
@@ -236,6 +228,7 @@
     $scope.categories = [];
     $scope.search = {
       category: "*",
+      categories: [],
       text: ""
     };
     getStatsByCategory = function() {
@@ -250,11 +243,45 @@
       });
     };
     $scope.setCategory = function(id) {
-      $scope.search.category = id;
+      return $scope.search.category = id;
+    };
+    $scope.toggleCategory = function(category) {
+      var cat, _i, _len, _ref, _results;
+      category.isSelected = !category.isSelected;
+      $scope.search.categories = [];
+      _ref = $scope.categories;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cat = _ref[_i];
+        if (cat.isSelected === true) {
+          _results.push($scope.search.categories.push(category));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    };
+    $scope.toggleFilter = function() {
+      var cat, _i, _len, _ref, _results;
+      if ($scope.search.categories.length === 0) {
+
+      } else {
+        $scope.search.categories = [];
+        _ref = $scope.categories;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          cat = _ref[_i];
+          _results.push(cat.isSelected = false);
+        }
+        return _results;
+      }
     };
     ResourceGallery.getFeatured(function(data) {
       $scope.galleries = data.galleries;
       $scope.categories = data.categories;
+      angular.forEach($scope.categories, function(category) {
+        return category.isSelected = false;
+      });
       console.info($scope.galleries.length, "items loaded");
       getStatsByCategory();
       $scope.loading = false;

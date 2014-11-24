@@ -1,9 +1,3 @@
-adjustHeightOLD = ->
-	h = $("img.gallery:first").height()
-	$(".gallery.info").height h
-	return
-
-
 app.controller "BrowseController", ($scope, ResourceGallery) ->
 
 	#Example of URL "http://res.cloudinary.com/michaelrambeau/image/upload/v1406960129/bfwg81wgizopp1wumizj.jpg"
@@ -33,7 +27,8 @@ app.controller "BrowseController", ($scope, ResourceGallery) ->
 	$scope.searchFilter = (item) ->
 		titleFilter = new RegExp($scope.search.text, "i").test(item.title)
 		descriptionFilter = RegExp($scope.search.text, "i").test(item.description)
-		categoryFilter = ($scope.search.category is "*") or (item.category is $scope.search.category)
+		#categoryFilter = ($scope.search.category is "*") or (item.category is $scope.search.category)
+		categoryFilter = ($scope.search.categories.length == 0) or (findCategory(item.category).isSelected is true)
 		categoryFilter and (titleFilter or descriptionFilter)
 
 	$scope.formatDate = (source) ->
@@ -44,6 +39,7 @@ app.controller "BrowseController", ($scope, ResourceGallery) ->
 	$scope.categories = []
 	$scope.search =
 		category: "*"
+		categories: []
 		text: ""
 
 	getStatsByCategory = ->
@@ -59,12 +55,25 @@ app.controller "BrowseController", ($scope, ResourceGallery) ->
 
 	$scope.setCategory = (id) ->
 		$scope.search.category = id
-		return
+
+	$scope.toggleCategory = (category) ->
+		category.isSelected = ! category.isSelected
+		$scope.search.categories = []
+		for cat in $scope.categories
+			if cat.isSelected is true then $scope.search.categories.push category
+
+	$scope.toggleFilter = () ->
+		if $scope.search.categories.length is 0
+		else
+			$scope.search.categories = []
+			cat.isSelected = false for cat in $scope.categories
 
 
 	ResourceGallery.getFeatured (data) ->
 		$scope.galleries = data.galleries
 		$scope.categories = data.categories
+		angular.forEach $scope.categories, (category) ->
+			category.isSelected = false
 		console.info $scope.galleries.length, "items loaded"
 		getStatsByCategory()
 		$scope.loading = false

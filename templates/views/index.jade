@@ -13,19 +13,28 @@ block content
 					div.bars
 						- for(var i=0; i<3; i++)
 							span.icon-bar
-					div.text.hidden-xs.hidden-sm Filter by category
-				.search-box
-					input(ng-model="search.text",placeHolder="Enter text to search",autocomplete="off")
-					span.cross-icon(ng-click="search.text=''",ng-show="search.text != ''") ×
+					div.text.hidden-xs.hidden-sm Browse
+
 
 		#sidebar.ui.sidebar
+			.search-box
+				input(ng-model="search.text",placeHolder="Enter text to search",autocomplete="off")
+				i.fa.fa-search.icon(ng-show="search.text == ''")
+				span.icon.close-icon(ng-click="search.text=''",ng-show="search.text != ''") ×
 			div.ui.menu.fluid.vertical.inverted
-				a.item(ng-click="setCategory('*')", ng-class="{active: search.category == '*'}")
-					| All
-					span.label {{galleries.length}}
-				a.item(ng-repeat="category in categories", ng-click="setCategory(category.value)", ng-class="{active: search.category == category.value, disabled: !category.total > 0}")
-					| {{category.label}}
-					span.label(ng-show="category.total > 0") {{category.total}}
+				a.item(ng-click="toggleFilter()", ng-class="{active: search.categories.length == 0}")
+					i.fa.fa-square(ng-show="!search.categories.length == 0")
+					i.fa.fa-check-square(ng-show="search.categories.length == 0")
+					|  All categories
+					span.ui.label(ng-class="{teal: search.categories.length == 0}") {{galleries.length}}
+				a.item(
+					ng-repeat="category in categories",
+					ng-click="toggleCategory(category)",
+					ng-class="{active: category.isSelected, disabled: !category.total > 0}")
+					i.fa.fa-square(ng-show="!category.isSelected")
+					i.fa.fa-check-square(ng-show="category.isSelected")
+					|  {{category.label}}
+					span.ui.label(ng-show="category.total > 0",ng-class="{teal: category.isSelected}") {{category.total}}
 
 
 		.gallery-block: .container-fluid.gallery-container
@@ -84,7 +93,7 @@ block content
 								strong customise 
 								| your site using your own banners, colours and wallpapers.
 
-			div.dark.text-center.load-more(ng-show="pagination.current == 1")
+			div.dark.text-center.load-more(ng-show="pagination.current == 1 && pagination.last != 1")
 				dir-pagination-controls(template-url="html/pagination-controls.html")
 				button.btn.btn-lg.dark-button(ng-click="setCurrent(pagination.current + 1)")
 					i.fa.fa-plus

@@ -4,6 +4,7 @@ window.app = angular.module("app", [
 	"ct.ui.router.extras"
 	"angularFileUpload"
 	"cloudinary"
+	"angularUtils.directives.dirPagination"
 ])
 app.run [
 	"$rootScope"

@@ -1,5 +1,5 @@
 (function() {
-  window.app = angular.module("app", ["resource", "ui.router", "ct.ui.router.extras", "angularFileUpload", "cloudinary"]);
+  window.app = angular.module("app", ["resource", "ui.router", "ct.ui.router.extras", "angularFileUpload", "cloudinary", "angularUtils.directives.dirPagination"]);
 
   app.run([
     "$rootScope", "$state", "$stateParams", function($rootScope, $state, $stateParams) {

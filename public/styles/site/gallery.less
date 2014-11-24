@@ -39,7 +39,7 @@
 .gallery-block{
 	background-color: #cbcbcb;
 	//#gradient > .radial(#dadada; #959595);
-	.lh-background-image(radial-gradient(center, #dadada 20%,#8e8e8e 100%));
+	.lh-background-image(radial-gradient(center, #dadada 50%,#8e8e8e 100%));
 	padding: @grid-gutter-width 0 0;
 }
 
@@ -77,4 +77,15 @@
 	margin-bottom: 20px;
 	background-color: #444444;
 	padding: 20px;
+}
+
+.btn-pagination{
+	margin-bottom: 20px;
+	background-color: transparent;
+	color: @uki-purple;
+	border: 3px solid @uki-purple;
+	font-size: 20px;
+	&:hover,&:focus{
+		color: @uki-purple;
+	}
 }

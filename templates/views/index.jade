@@ -14,7 +14,7 @@ block content
 						- for(var i=0; i<3; i++)
 							span.icon-bar
 					div.text.hidden-xs.hidden-sm Filter by category
-				span.search-box
+				.search-box
 					input(ng-model="search.text",placeHolder="Enter text to search",autocomplete="off")
 					span.cross-icon(ng-click="search.text=''",ng-show="search.text != ''") ×
 
@@ -30,17 +30,52 @@ block content
 
 		.gallery-block: .container-fluid.gallery-container
 
+			//PREV button for mobiles (smaller)
+			div.visible-xs
+				div(ng-show="pagination.current != 1")
+					button.btn.btn-block.btn-lg.btn-pagination(ng-click="setCurrent(pagination.current - 1)")
+						i.fa.fa-backward
+						|  PREVIOUS
+
+			//PREV button for mobiles (smaller)
+			//div.visible-xs
+				div.dark.text-center.load-more(ng-show="pagination.current != 1")
+					button.btn.btn-lg.dark-button(ng-click="setCurrent(pagination.current - 1)")
+						i.fa.fa-backward
+						|  PREV
+
 			div.row
-				div.col-sm-6.col-md-4.col-lg-3.hidden-xs
+				div.col-sm-6.col-md-4.col-lg-3.hidden-xs(ng-show="pagination.current == 1")
 					.gallery-text-block
 						img.img-responsive(src="/images/gallery.gif")
 						.inner
 							p What is ukiuki?
 							a.btn.dark-button(ui-sref="whatisukiuki") Click here
 
-				gallery(data="gallery", ng-repeat="gallery in galleries | filter:searchFilter | limitTo:10")
 
-				div.col-sm-6.col-md-4.col-lg-3
+
+				div.col-sm-6.col-md-4.col-lg-3.hidden-xs(ng-show="pagination.current != 1")
+					.gallery-text-block
+						img.img-responsive(src="/images/gallery.gif")
+						.inner
+							a.btn.dark-button(href,ng-click="setCurrent(pagination.current - 1)")
+								i.fa.fa-backward
+								|  PREVIOUS
+
+				gallery(
+					data="gallery",
+					dir-paginate="gallery in galleries | filter:searchFilter | itemsPerPage:6"
+				)
+
+				div.col-sm-6.col-md-4.col-lg-3.hidden-xs(ng-show="pagination.current != pagination.last && pagination.current != 1")
+					.gallery-text-block
+						img.img-responsive(src="/images/gallery.gif")
+						.inner
+							a.btn.dark-button(href,ng-click="setCurrent(pagination.current + 1)")
+								i.fa.fa-forward
+								|  NEXT
+
+				div.col-sm-6.col-md-4.col-lg-3(ng-show="pagination.current == 1")
 					.gallery-text-block
 						img.img-responsive(src="/images/gallery.gif")
 						.inner
@@ -49,10 +84,18 @@ block content
 								strong customise 
 								| your site using your own banners, colours and wallpapers.
 
-			div.dark.text-center.load-more
-				button.btn.btn-lg.dark-button
+			div.dark.text-center.load-more(ng-show="pagination.current == 1")
+				dir-pagination-controls(template-url="html/pagination-controls.html")
+				button.btn.btn-lg.dark-button(ng-click="setCurrent(pagination.current + 1)")
 					i.fa.fa-plus
 					|  Click here to load more
+
+			//NEXT button for mobiles (smaller)
+			div.visible-xs
+				div(ng-show="pagination.current != pagination.last && pagination.current != 1")
+					button.btn.btn-block.btn-lg.btn-pagination(ng-click="setCurrent(pagination.current + 1)")
+						| NEXT
+						i.fa.fa-forward
 
 						
 		
@@ -63,6 +106,7 @@ block js
 	script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.js")
 	//script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.min.js")
 	script(src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.min.js")
+	script(src="/js/lib/angular/dirPagination.js")
 	script(src="/js/lib/angular/ct-ui-router-extras.min.js")
 	script(src="/js/lib/angular/angular-file-upload.js")
 	script(src="/js/lib/jquery/jquery.cloudinary.js")

@@ -26,7 +26,7 @@ block content
 					i.fa.fa-square(ng-show="!search.categories.length == 0")
 					i.fa.fa-check-square(ng-show="search.categories.length == 0")
 					|  All categories
-					span.ui.label(ng-class="{teal: search.categories.length == 0}") {{galleries.length}}
+					span.ui.label(ng-class="{selected: search.categories.length == 0}") {{galleries.length}}
 				a.item(
 					ng-repeat="category in categories",
 					ng-click="toggleCategory(category)",
@@ -34,7 +34,7 @@ block content
 					i.fa.fa-square(ng-show="!category.isSelected")
 					i.fa.fa-check-square(ng-show="category.isSelected")
 					|  {{category.label}}
-					span.ui.label(ng-show="category.total > 0",ng-class="{teal: category.isSelected}") {{category.total}}
+					span.ui.label(ng-show="category.total > 0",ng-class="{selected: category.isSelected}") {{category.total}}
 
 
 		.gallery-block: .container-fluid.gallery-container

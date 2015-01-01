@@ -73,3 +73,17 @@ exports.requireUser = function(req, res, next) {
 	}
 	
 };
+
+exports.allowCrossDomain = function(req, res, next) {
+	//middleware to allow api cross-domain requests
+	//from http://stackoverflow.com/questions/24219598/expressjs-angularjs-cross-domain-request-issue
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+	res.header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Cache-Control');
+	if (req.method === 'OPTIONS') {
+		res.statusCode = 204;
+		return res.end();
+	} else {
+		return next();
+	}
+};

@@ -18,8 +18,7 @@
  * http://expressjs.com/api.html#app.VERB
  */
 
-var _ = require('underscore'),
-	keystone = require('keystone'),
+var	keystone = require('keystone'),
 	middleware = require('./middleware'),
 	importRoutes = keystone.importer(__dirname);
 
@@ -49,6 +48,7 @@ exports = module.exports = function(app) {
 	
 	//API
 	app.all('/api*', keystone.initAPI);
+	app.all('/api*', middleware.allowCrossDomain);
 	
 	app.all('/api/featured-items', routes.api.galleryList.getFeaturedGalleries);
 	app.all('/api/user-galleries/:userId', routes.api.galleryList.getUserGalleries);
